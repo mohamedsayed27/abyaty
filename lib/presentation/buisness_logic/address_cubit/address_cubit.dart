@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:abyaty/core/base_use_case/base_use_case.dart';
 import 'package:abyaty/core/parameters/address_parameters.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../core/services/maps_services.dart';
 import '../../../core/services/services_locator.dart';
 import '../../../domain/entities/address_entity/address_details_entity.dart';
 import '../../../domain/use_cases/address_use_case/delete_address.dart';
@@ -19,10 +24,14 @@ class AddressCubit extends Cubit<AddressState> {
   final ShowAddressUseCase _showAddressUseCase = sl();
   final GetAddressListUseCase _getAddressListUseCase = sl();
   final UpdateDefaultAddressUseCase _updateDefaultAddressUseCase = sl();
+  final GoogleMapsServices _mapService = sl();
 
   AddressCubit() : super(AddressInitial());
 
   static AddressCubit get(context) => BlocProvider.of(context);
+
+  Completer<GoogleMapController> controller = Completer();
+  Set<Marker> markers = {};
 
   void postAddress(AddressParameters parameters) async {
     emit(PostAddressLoading());
@@ -35,8 +44,9 @@ class AddressCubit extends Cubit<AddressState> {
   }
 
   List<AddressDetailsEntity> addressList = [];
-  Map<int,int> addressMap = {};
+  Map<int, String> addressMap = {};
   AddressDetailsEntity? defaultAddress;
+
   void updateAddress(AddressParameters parameters) async {
     emit(UpdateAddressLoading());
     final response = await _updateAddressUseCase(parameters);
@@ -68,17 +78,17 @@ class AddressCubit extends Cubit<AddressState> {
   }
 
   void getAddressList() async {
-    addressList=[];
+    addressList = [];
     emit(GetListAddressLoading());
     final response = await _getAddressListUseCase(const NoParameters());
     response.fold((l) {
       emit(GetListAddressError(error: l.baseErrorModel.message));
     }, (r) {
-      if(r.addressList!=null){
+      if (r.addressList != null) {
         addressList = r.addressList!;
         for (var element in addressList) {
-          addressMap.addAll({element.id!:element.isDefault!});
-          if(element.isDefault==1){
+          addressMap.addAll({element.id!: element.isDefault!});
+          if (element.isDefault == "1") {
             defaultAddress = element;
           }
         }
@@ -86,22 +96,76 @@ class AddressCubit extends Cubit<AddressState> {
       emit(GetListAddressSuccess());
     });
   }
+
   AddressDetailsEntity? changeAddress;
-  void updateDefaultAddressLocally(AddressDetailsEntity addressDetailsEntity)async{
-    addressMap.updateAll((key, value) => value=0);
-    addressMap.update(addressDetailsEntity.id!, (value) => 1);
+
+  void updateDefaultAddressLocally(
+      AddressDetailsEntity addressDetailsEntity) async {
+    addressMap.updateAll((key, value) => value = '0');
+    addressMap.update(addressDetailsEntity.id!, (value) => '1');
     changeAddress = addressDetailsEntity;
     emit(UpdateDefaultAddressLocally());
   }
-  void updateDefaultAddress(int addressId)async{
+
+  void updateDefaultAddress(int addressId) async {
     emit(UpdateDefaultAddressLoading());
     final response = await _updateDefaultAddressUseCase(addressId);
     response.fold((l) {
-      print(l);
       emit(UpdateDefaultAddressError(error: l.baseErrorModel.message));
     }, (r) {
       getAddressList();
       emit(UpdateDefaultAddressSuccess());
     });
+  }
+
+  Position? userCurrentPosition;
+
+  bool getUserLocationLoading = false;
+  void getCurrentPosition() async {
+    markers ={};
+    getUserLocationLoading = true;
+    emit(GetCurrentLocationLoading());
+    try{
+      print("entered");
+       // print(await MapService.getCurrentPosition());
+       userCurrentPosition = await _mapService.getCurrentPosition();
+      print(userCurrentPosition);
+      markers.add(
+        Marker(
+          markerId: MarkerId(userCurrentPosition.toString()),
+          position: LatLng(
+            userCurrentPosition!.latitude,
+            userCurrentPosition!.longitude,
+          ),
+          infoWindow: InfoWindow(
+            title: 'Marker ${markers.length + 1}',
+            snippet: 'This is a new marker',
+          ),
+        ),
+      );
+      getUserLocationLoading = false;
+      emit(GetCurrentLocationPositionSuccess());
+    }catch(e) {
+      getUserLocationLoading = false;
+      emit(GetCurrentLocationPositionError());
+      print(e);
+    }
+  }
+
+  void addMarker(LatLng pos) async{
+    markers = {};
+    final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
+   print(address);
+    markers.add(
+      Marker(
+        markerId: MarkerId(pos.toString()),
+        position: pos,
+        infoWindow: InfoWindow(
+          title: address[0].country,
+          snippet: address[0].locality,
+        ),
+      ),
+    );
+    emit(AddMarker());
   }
 }

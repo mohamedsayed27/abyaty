@@ -37,11 +37,16 @@ import '../../domain/use_cases/products_use_case/remove_product_from_cart_use_ca
 import '../../domain/use_cases/products_use_case/remove_product_from_favorite_use_case.dart';
 import '../../domain/use_cases/products_use_case/review_product_use_case.dart';
 import '../network/dio_helper.dart';
+import 'maps_services.dart';
 
 final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
+
+
+    sl.registerLazySingleton(() => GoogleMapsServices());
+
     ///USE CASES
 
     /// Auth UseCases

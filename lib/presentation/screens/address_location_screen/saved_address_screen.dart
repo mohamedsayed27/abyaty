@@ -1,20 +1,20 @@
-import 'package:abyaty/core/app_router/screens_name.dart';
-import 'package:abyaty/core/assets_path/svg_path.dart';
+
 import 'package:abyaty/core/constants/extensions.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/data_widget.dart';
-import 'package:abyaty/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../../core/app_theme/app_colors.dart';
 import '../../../core/app_theme/custom_themes.dart';
-import '../../widgets/bottom_sheets/langauges_bottom_sheet/languages_bottom_sheet.dart';
+import '../../../core/assets_path/svg_path.dart';
+import '../../../translations/locale_keys.g.dart';
 import '../../widgets/shared_widgets/custom_app_bar.dart';
 import '../../widgets/shared_widgets/custom_outlined_button.dart';
+import '../../widgets/shared_widgets/custom_sized_box.dart';
 import '../../widgets/shared_widgets/custom_text_button.dart';
+import '../../widgets/shared_widgets/data_widget.dart';
 import '../../widgets/shared_widgets/delete_dialog_widget.dart';
 import '../../widgets/shared_widgets/primary_color_outlined_button.dart';
 

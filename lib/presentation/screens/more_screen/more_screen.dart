@@ -82,7 +82,7 @@ class MoreScreen extends StatelessWidget {
           ),
           TabItemWidget(
             iconPath: SvgPath.moreMap,
-            title: LocaleKeys.savedCards,
+            title: LocaleKeys.address,
             onPressed: () {
               Navigator.pushNamed(context, ScreenName.savedAddressScreen);
             },

@@ -61,6 +61,10 @@ class UpdateDefaultAddressError extends AddressState {
     required this.error,
   });
 }
+class GetCurrentLocationLoading extends AddressState {}
+class GetCurrentLocationPositionSuccess extends AddressState {}
+class GetCurrentLocationPositionError extends AddressState {}
+class AddMarker extends AddressState {}
 class DeleteAddressLoading extends AddressState {}
 
 class DeleteAddressSuccess extends AddressState {}

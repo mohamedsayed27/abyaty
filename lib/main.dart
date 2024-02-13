@@ -2,6 +2,7 @@ import 'package:abyaty/core/cache_helper/shared_pref_methods.dart';
 import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
 import 'package:abyaty/try_screen.dart';
 
+import 'bloc_observer.dart';
 import 'core/app_router/app_router.dart';
 import 'core/app_router/screens_name.dart';
 import 'core/app_theme/app_theme.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'presentation/screens/address_location_screen/saved_address_screen.dart';
 import 'translations/codegen_loader.g.dart';
 
 
@@ -24,6 +26,7 @@ void main() async{
   await DioHelper.init();
   await CacheHelper.init();
   ServicesLocator().init();
+  Bloc.observer = MyBlocObserver();
   runApp(
     EasyLocalization(
       supportedLocales: const [
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             onGenerateRoute: AppRouter.generateRoute,
             initialRoute: ScreenName.splashScreen,
-            // home: TryScreen(),
+            // home: SavedAddressScreen(),
           ),
         );
       },
