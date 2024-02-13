@@ -33,6 +33,7 @@ class AddressCubit extends Cubit<AddressState> {
   Completer<GoogleMapController> controller = Completer();
   Set<Marker> markers = {};
 
+  String? isDefault;
   void postAddress(AddressParameters parameters) async {
     emit(PostAddressLoading());
     final response = await _postAddressUseCase(parameters);

@@ -1,5 +1,6 @@
 import 'package:abyaty/core/app_theme/app_colors.dart';
 import 'package:abyaty/core/app_theme/custom_themes.dart';
+import 'package:abyaty/presentation/buisness_logic/address_cubit/address_cubit.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_text_button.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,17 @@ class _SaveAddressAsADefaultState extends State<SaveAddressAsADefault> {
               borderRadius: BorderRadius.circular(4.r),
             ),
             onChanged: (newValue) {
+
+
               setState(() {
                 isChecked = newValue!;
               });
+              if(isChecked==true){
+                AddressCubit.get(context).isDefault = "1";
+              }else{
+                AddressCubit.get(context).isDefault = "0";
+              }
+              print(AddressCubit.get(context).isDefault);
             },
           ),
         ),
