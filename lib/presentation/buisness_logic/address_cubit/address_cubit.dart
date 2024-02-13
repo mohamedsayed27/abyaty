@@ -112,6 +112,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(UpdateDefaultAddressLoading());
     final response = await _updateDefaultAddressUseCase(addressId);
     response.fold((l) {
+      print(l);
       emit(UpdateDefaultAddressError(error: l.baseErrorModel.message));
     }, (r) {
       getAddressList();

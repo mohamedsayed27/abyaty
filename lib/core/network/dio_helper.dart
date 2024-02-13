@@ -39,6 +39,7 @@ class DioHelper {
     String lang = 'ar'
   }) async {
      token = await CacheHelper.getData(key: CacheKeys.token);
+     print(token);
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
