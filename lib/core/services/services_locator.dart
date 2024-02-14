@@ -45,7 +45,7 @@ class ServicesLocator {
   void init() {
 
 
-    sl.registerLazySingleton(() => GoogleMapsServices());
+    // sl.registerLazySingleton(() => GoogleMapsServices());
 
     ///USE CASES
 

@@ -40,7 +40,7 @@ class _ChooseAddressLocationScreenState
   @override
   void initState() {
     final cubit = AddressCubit.get(context);
-    cubit.getCurrentPosition();
+    // cubit.getCurrentPosition();
     super.initState();
   }
 
@@ -163,7 +163,7 @@ class _ChooseAddressLocationScreenState
                               onMapCreated: (GoogleMapController controller) {
                                 cubit.controller.complete(controller);
                               },
-                              onTap: cubit.addMarker,
+                              // onTap: cubit.addMarker,
                               initialCameraPosition: CameraPosition(
                                 target: LatLng(
                                   cubit.userCurrentPosition?.latitude??0,

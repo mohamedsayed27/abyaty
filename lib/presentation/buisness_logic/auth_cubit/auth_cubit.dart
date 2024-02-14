@@ -27,13 +27,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   void login() async {
     emit(LoginLoading());
+    print(loginEmailController.text);
+    print(loginPasswordController.text);
     final response = await _loginUseCase(LoginParameters(
       email: loginEmailController.text,
       password: loginPasswordController.text,
     ));
     response.fold((l) {
       emit(LoginError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) async {
       await CacheHelper.saveData(
@@ -58,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.fold((l) {
       emit(RegisterError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(RegisterSuccess(registerEntity: r));

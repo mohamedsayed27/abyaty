@@ -68,9 +68,18 @@ class AddressRemoteDataSource extends AddressBaseRemoteDatasource {
       return GetAddressListModel.fromJson(response.data);
     } catch (e) {
       if (e is DioException) {
-        throw ErrorException(
-          baseErrorModel: BaseErrorModel.fromJson(e.response!.data),
-        );
+        print(e);
+        if (e is String) {
+          throw ErrorException(
+            baseErrorModel: BaseErrorModel(
+              message: e.toString(),
+            ),
+          );
+        }else{
+          throw ErrorException(
+            baseErrorModel: BaseErrorModel.fromJson(e.response!.data),
+          );
+        }
       } else {
         rethrow;
       }
@@ -138,7 +147,8 @@ class AddressRemoteDataSource extends AddressBaseRemoteDatasource {
   }
 
   @override
-  Future<BaseResponseModel> updateDefaultAddress({required int addressId}) async {
+  Future<BaseResponseModel> updateDefaultAddress(
+      {required int addressId}) async {
     try {
       final response = await dioHelper.postData(
         url: "${EndPoints.updateDefaultAddress}/${addressId}",

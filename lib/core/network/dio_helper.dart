@@ -12,6 +12,7 @@ class DioHelper {
       BaseOptions(
         baseUrl: EndPoints.baseUrl,
         receiveDataWhenStatusError: true,
+
       ),
     );
   }
@@ -43,8 +44,9 @@ class DioHelper {
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
-      "Authorization": "Bearer $token",
-      'Accept': 'text/plain',
+      "Connection":"keep-alive",
+      if (token != null)"Authorization": "Bearer $token",
+      'Accept': '*/*',
     };
     return await dio.post(url, queryParameters: query, data: data);
 

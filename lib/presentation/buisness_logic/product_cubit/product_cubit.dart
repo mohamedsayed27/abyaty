@@ -53,7 +53,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _addProductToCartUseCase(addToCartParameters);
     response.fold((l) {
       emit(AddToCartError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(AddToCartSuccess());
@@ -67,7 +67,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _reviewProductUseCase(productReviewsParameters);
     response.fold((l) {
       emit(AddToCartError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(AddToCartSuccess());
@@ -81,7 +81,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _addProductToFavoriteUseCase(id);
     response.fold((l) {
       emit(AddToFavoriteError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(AddToFavoriteSuccess());
@@ -95,7 +95,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _removeProductFromFavoriteUseCase(id);
     response.fold((l) {
       emit(RemoveFromFavoriteError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(RemoveFromFavoriteSuccess());
@@ -109,7 +109,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _removeProductFromCartUseCase(id);
     response.fold((l) {
       emit(RemoveFromCartError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(RemoveFromCartSuccess());
@@ -123,7 +123,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getAllProductUseCase(parameters);
     response.fold((l) {
       emit(GetAllProductError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(GetAllProductSuccess());
@@ -148,7 +148,7 @@ class ProductCubit extends Cubit<ProductState> {
     response.fold((l) {
 
       emit(GetAllProductError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       if(r.productPaginatedEntity!=null){
@@ -173,7 +173,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getCartListUseCase(const NoParameters());
     response.fold((l) {
       emit(GetCartListError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       emit(GetCartListSuccess());
@@ -186,7 +186,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getFavoriteProductsUseCase(const NoParameters());
     response.fold((l) {
       emit(GetFavoriteListError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       if (r.productsList != null && r.productsList!.isNotEmpty) {
@@ -202,7 +202,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getProductAttributesUseCase(productId);
     response.fold((l) {
       emit(GetProductsAttributeError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       if (r.attributes != null && r.attributes!.isNotEmpty) {
@@ -218,7 +218,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getProductDetailsUseCase(productId);
     response.fold((l) {
       emit(GetProductDetailsError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       productDetailsEntity = r.productDetailsEntity;
@@ -233,7 +233,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getTopSellingProductUseCase(const NoParameters());
     response.fold((l) {
       emit(GetTopSellingProductsError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       if (r.productsList != null && r.productsList!.isNotEmpty) {
@@ -249,7 +249,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getCategoriesListUseCase(const NoParameters());
     response.fold((l) {
       emit(GetCategoriesError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
         categories = r.categoryDetailsEntity;
@@ -264,7 +264,7 @@ class ProductCubit extends Cubit<ProductState> {
     final response = await _getSubCategoriesListUseCase(categoryId);
     response.fold((l) {
       emit(GetSubCategoriesError(
-        error: l.baseErrorModel.message,
+        error: l.baseErrorModel.message??"",
       ));
     }, (r) {
         subCategories = r.subCategoryDetailsEntity;

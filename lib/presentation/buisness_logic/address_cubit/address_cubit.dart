@@ -24,7 +24,7 @@ class AddressCubit extends Cubit<AddressState> {
   final ShowAddressUseCase _showAddressUseCase = sl();
   final GetAddressListUseCase _getAddressListUseCase = sl();
   final UpdateDefaultAddressUseCase _updateDefaultAddressUseCase = sl();
-  final GoogleMapsServices _mapService = sl();
+  // final GoogleMapsServices _mapService = sl();
 
   AddressCubit() : super(AddressInitial());
 
@@ -38,7 +38,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(PostAddressLoading());
     final response = await _postAddressUseCase(parameters);
     response.fold((l) {
-      emit(PostAddressError(error: l.baseErrorModel.message));
+      emit(PostAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       emit(PostAddressSuccess());
     });
@@ -52,7 +52,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(UpdateAddressLoading());
     final response = await _updateAddressUseCase(parameters);
     response.fold((l) {
-      emit(UpdateAddressError(error: l.baseErrorModel.message));
+      emit(UpdateAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       emit(UpdateAddressSuccess());
     });
@@ -62,7 +62,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(DeleteAddressLoading());
     final response = await _deleteAddressUseCase(id);
     response.fold((l) {
-      emit(DeleteAddressError(error: l.baseErrorModel.message));
+      emit(DeleteAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       emit(DeleteAddressSuccess());
     });
@@ -72,7 +72,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(ShowAddressLoading());
     final response = await _showAddressUseCase(id);
     response.fold((l) {
-      emit(ShowAddressError(error: l.baseErrorModel.message));
+      emit(ShowAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       emit(ShowAddressSuccess());
     });
@@ -83,7 +83,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(GetListAddressLoading());
     final response = await _getAddressListUseCase(const NoParameters());
     response.fold((l) {
-      emit(GetListAddressError(error: l.baseErrorModel.message));
+      emit(GetListAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       if (r.addressList != null) {
         addressList = r.addressList!;
@@ -113,7 +113,7 @@ class AddressCubit extends Cubit<AddressState> {
     final response = await _updateDefaultAddressUseCase(addressId);
     response.fold((l) {
       print(l);
-      emit(UpdateDefaultAddressError(error: l.baseErrorModel.message));
+      emit(UpdateDefaultAddressError(error: l.baseErrorModel.message??""));
     }, (r) {
       getAddressList();
       emit(UpdateDefaultAddressSuccess());
@@ -123,51 +123,51 @@ class AddressCubit extends Cubit<AddressState> {
   Position? userCurrentPosition;
 
   bool getUserLocationLoading = false;
-  void getCurrentPosition() async {
-    markers ={};
-    getUserLocationLoading = true;
-    emit(GetCurrentLocationLoading());
-    try{
-      print("entered");
-       // print(await MapService.getCurrentPosition());
-       userCurrentPosition = await _mapService.getCurrentPosition();
-      print(userCurrentPosition);
-      markers.add(
-        Marker(
-          markerId: MarkerId(userCurrentPosition.toString()),
-          position: LatLng(
-            userCurrentPosition!.latitude,
-            userCurrentPosition!.longitude,
-          ),
-          infoWindow: InfoWindow(
-            title: 'Marker ${markers.length + 1}',
-            snippet: 'This is a new marker',
-          ),
-        ),
-      );
-      getUserLocationLoading = false;
-      emit(GetCurrentLocationPositionSuccess());
-    }catch(e) {
-      getUserLocationLoading = false;
-      emit(GetCurrentLocationPositionError());
-      print(e);
-    }
-  }
-
-  void addMarker(LatLng pos) async{
-    markers = {};
-    final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
-   print(address);
-    markers.add(
-      Marker(
-        markerId: MarkerId(pos.toString()),
-        position: pos,
-        infoWindow: InfoWindow(
-          title: address[0].country,
-          snippet: address[0].locality,
-        ),
-      ),
-    );
-    emit(AddMarker());
-  }
+  // void getCurrentPosition() async {
+  //   markers ={};
+  //   getUserLocationLoading = true;
+  //   emit(GetCurrentLocationLoading());
+  //   try{
+  //     print("entered");
+  //      // print(await MapService.getCurrentPosition());
+  //      userCurrentPosition = await _mapService.getCurrentPosition();
+  //     print(userCurrentPosition);
+  //     markers.add(
+  //       Marker(
+  //         markerId: MarkerId(userCurrentPosition.toString()),
+  //         position: LatLng(
+  //           userCurrentPosition!.latitude,
+  //           userCurrentPosition!.longitude,
+  //         ),
+  //         infoWindow: InfoWindow(
+  //           title: 'Marker ${markers.length + 1}',
+  //           snippet: 'This is a new marker',
+  //         ),
+  //       ),
+  //     );
+  //     getUserLocationLoading = false;
+  //     emit(GetCurrentLocationPositionSuccess());
+  //   }catch(e) {
+  //     getUserLocationLoading = false;
+  //     emit(GetCurrentLocationPositionError());
+  //     print(e);
+  //   }
+  // }
+  //
+  // void addMarker(LatLng pos) async{
+  //   markers = {};
+  //   final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
+  //  print(address);
+  //   markers.add(
+  //     Marker(
+  //       markerId: MarkerId(pos.toString()),
+  //       position: pos,
+  //       infoWindow: InfoWindow(
+  //         title: address[0].country,
+  //         snippet: address[0].locality,
+  //       ),
+  //     ),
+  //   );
+  //   emit(AddMarker());
+  // }
 }

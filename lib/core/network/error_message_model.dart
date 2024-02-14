@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class BaseErrorModel extends Equatable {
-  final String message;
-  final bool success;
-  final int code;
+  final String? message;
+  final bool? success;
+  final int? code;
 
   const BaseErrorModel({
-    required this.message,
-    required this.success,
-    required this.code,
+     this.message,
+     this.success,
+     this.code,
   });
 
   factory BaseErrorModel.fromJson(Map<String, dynamic> json) {
