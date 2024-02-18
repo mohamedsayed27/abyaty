@@ -22,7 +22,7 @@ class LoginEntity extends BaseResponseEntity {
 class LoginResultResult extends Equatable {
   final String? authToken;
   final String? tokenType;
-  final int? firstLogin;
+  final String? firstLogin;
 
   const LoginResultResult({
     this.authToken,

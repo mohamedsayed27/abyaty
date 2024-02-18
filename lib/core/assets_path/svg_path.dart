@@ -60,10 +60,12 @@ class SvgPath{
   static const gender = "assets/svg/gender.svg";
   static const location = "assets/svg/location.svg";
   static const lock = "assets/svg/lock.svg";
+  static const addressLocation = "assets/svg/addressLocation.svg";
   static const camera = "assets/svg/camera.svg";
   static const destinationIcon = "assets/svg/destinationIcon.svg";
   static const sourceIcon = "assets/svg/sourceIcon.svg";
   static const infoCircle = "assets/svg/infoCircle.svg";
+  static const locationSlash = "assets/svg/locationSlash.svg";
   static const car = "assets/svg/car.svg";
   static const arabic = "assets/svg/arabic.svg";
   static const english = "assets/svg/english.svg";

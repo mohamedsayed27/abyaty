@@ -16,7 +16,7 @@ class GetNotPaginatedProductsModel extends GetNotPaginatedProductEntity {
       code: json['code'],
       message: json['message'],
       productsList:
-          json['result'].isNotEmpty && json['result'] != null
+           json['result'] != null
               ? List<ProductModel>.from(
                   json['result'].map(
                     (e) => ProductModel.fromJson(e),

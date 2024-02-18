@@ -101,9 +101,9 @@ class AddressCubit extends Cubit<AddressState> {
   AddressDetailsEntity? changeAddress;
 
   void updateDefaultAddressLocally(
-      AddressDetailsEntity addressDetailsEntity) async {
+      AddressDetailsEntity? addressDetailsEntity) async {
     addressMap.updateAll((key, value) => value = '0');
-    addressMap.update(addressDetailsEntity.id!, (value) => '1');
+    if(addressDetailsEntity!=null)addressMap.update(addressDetailsEntity.id!, (value) => '1');
     changeAddress = addressDetailsEntity;
     emit(UpdateDefaultAddressLocally());
   }

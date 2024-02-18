@@ -27,6 +27,7 @@ class DioHelper {
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
+      'User-Agent': 'Chrome/96.0.4664.110',
       if (token != null) "Authorization": "Bearer $token",
       'Accept': 'text/plain',
     };
@@ -45,6 +46,7 @@ class DioHelper {
       'Content-Type': 'application/json',
       'x-localization': lang,
       "Connection":"keep-alive",
+      'User-Agent': 'Chrome/96.0.4664.110',
       if (token != null)"Authorization": "Bearer $token",
       'Accept': '*/*',
     };

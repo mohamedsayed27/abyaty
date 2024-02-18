@@ -147,6 +147,7 @@ class ProductRemoteDataSource extends ProductBaseRemoteDataSource {
       final response = await dioHelper.getData(
         url: EndPoints.topSellingProducts,
       );
+      print(response);
       return GetNotPaginatedProductsModel.fromJson(response.data);
     } catch (e) {
       if (e is DioException) {

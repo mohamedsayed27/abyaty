@@ -1,7 +1,8 @@
-import 'package:abyaty/core/constants/extensions.dart';
+import 'package:abyaty/core/assets_path/svg_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/app_theme/app_colors.dart';
@@ -9,7 +10,6 @@ import '../../../core/app_theme/custom_themes.dart';
 import '../../buisness_logic/address_cubit/address_cubit.dart';
 import '../../buisness_logic/address_cubit/address_state.dart';
 import '../bottom_sheets/home_location_bottom_sheet/home_location_bottom_sheet_widget.dart';
-import '../shared_widgets/custom_sized_box.dart';
 
 class AddressLocationWidget extends StatelessWidget {
   const AddressLocationWidget({super.key});
@@ -39,22 +39,30 @@ class AddressLocationWidget extends StatelessWidget {
               builder: (context) {
                 return const HomeLocationBottomSheet();
               },
-            ).then((ee){
-              cubit.updateDefaultAddressLocally(cubit.defaultAddress!);
+            ).then((ee) {
+              cubit.updateDefaultAddressLocally(cubit.defaultAddress);
             });
-
           },
           dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+          titleAlignment: ListTileTitleAlignment.titleHeight,
+          minLeadingWidth: 0,
+          horizontalTitleGap: 4.w,
           trailing: Icon(
             Icons.keyboard_arrow_down_rounded,
             size: 26.r,
             color: AppColors.greyTextColor,
           ),
-          leading: Icon(
-            Icons.location_pin,
-            color: AppColors.secondaryColor,
-            size: 20.r,
+          leading: SvgPicture.asset(
+            SvgPath.addressLocation,
+            colorFilter: ColorFilter.mode(
+              cubit.defaultAddress == null
+                  ? AppColors.grey4D
+                  : AppColors.secondaryColor,
+              BlendMode.srcIn,
+            ),
+            height: 16.h,
+            width: 16.w,
           ),
           title: state is GetListAddressLoading
               ? Shimmer.fromColors(
@@ -70,7 +78,7 @@ class AddressLocationWidget extends StatelessWidget {
                   ),
                 )
               : Text(
-            cubit.defaultAddress?.lable??"",
+                  cubit.defaultAddress?.lable ?? "Deliver to :",
                   style: CustomThemes.greyColo4DTextTheme(context).copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,

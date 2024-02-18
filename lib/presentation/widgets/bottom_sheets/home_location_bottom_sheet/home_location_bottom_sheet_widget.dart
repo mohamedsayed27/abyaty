@@ -63,20 +63,24 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      CustomTextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, ScreenName.chooseAddressLocationScreen,arguments: false);
-
-                        },
-                        child: Text(
-                          "Add New Location",
-                          style: CustomThemes.primaryColorTextTheme(context)
-                              .copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
-                            decoration: TextDecoration.underline,
-                            decorationColor: AppColors.primaryColor,
+                      Visibility(
+                        visible: cubit.addressList.isNotEmpty,
+                        child: CustomTextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(
+                                context, ScreenName.chooseAddressLocationScreen,
+                                arguments: false);
+                          },
+                          child: Text(
+                            "Add New Location",
+                            style: CustomThemes.primaryColorTextTheme(context)
+                                .copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.sp,
+                              decoration: TextDecoration.underline,
+                              decorationColor: AppColors.primaryColor,
+                            ),
                           ),
                         ),
                       ),
@@ -106,15 +110,19 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                   const CustomSizedBox(
                     height: 40,
                   ),
-                  PrimaryColorElevatedButton(
-                    text: "Confirm",
-                    onPressed: cubit.changeAddress != null &&
-                            cubit.changeAddress!.id != cubit.defaultAddress!.id
-                        ? () {
-                            cubit
-                                .updateDefaultAddress(cubit.changeAddress!.id!);
-                          }
-                        : null,
+                  Visibility(
+                    visible: cubit.addressList.isNotEmpty,
+                    child: PrimaryColorElevatedButton(
+                      text: "Confirm",
+                      onPressed: cubit.changeAddress != null &&
+                              cubit.changeAddress!.id !=
+                                  cubit.defaultAddress!.id
+                          ? () {
+                              cubit.updateDefaultAddress(
+                                  cubit.changeAddress!.id!);
+                            }
+                          : null,
+                    ),
                   ),
                   const CustomSizedBox(
                     height: 24,
