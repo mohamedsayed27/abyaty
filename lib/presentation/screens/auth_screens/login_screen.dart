@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (state is LoginSuccess) {
                   Navigator.pop(context);
                   messenger.showSnackBar(
-                    CustomSnackBar(
+                    customSnackBar(
                       context,
                       text: state.loginEntity.message ?? "تم تسجيل الدخول بنجاح",
                       textAlign: TextAlign.center,
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (state is LoginError) {
                   Navigator.pop(context);
                   messenger.showSnackBar(
-                    CustomSnackBar(
+                    customSnackBar(
                       context,
                       text: state.error,
                       textAlign: TextAlign.center,
@@ -123,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                         height: 48,
+                        padding: EdgeInsets.symmetric(vertical: 14.5.h),
                         text: LocaleKeys.login.tr(),
                       ),
                       const CustomSizedBox(

@@ -65,6 +65,8 @@ class GetCurrentLocationLoading extends AddressState {}
 class GetCurrentLocationPositionSuccess extends AddressState {}
 class GetCurrentLocationPositionError extends AddressState {}
 class AddMarker extends AddressState {}
+class GetSearchedLocationsLoading extends AddressState {}
+class GetSearchedLocationsSuccess extends AddressState {}
 class DeleteAddressLoading extends AddressState {}
 
 class DeleteAddressSuccess extends AddressState {}

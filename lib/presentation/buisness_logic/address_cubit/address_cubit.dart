@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:abyaty/core/base_use_case/base_use_case.dart';
+import 'package:abyaty/core/network/dio_helper.dart';
 import 'package:abyaty/core/parameters/address_parameters.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../core/services/maps_services.dart';
 import '../../../core/services/services_locator.dart';
+import '../../../data/models/address_model/place_result_model.dart';
 import '../../../domain/entities/address_entity/address_details_entity.dart';
 import '../../../domain/use_cases/address_use_case/delete_address.dart';
 import '../../../domain/use_cases/address_use_case/get_address_list_use_case.dart';
@@ -24,13 +27,12 @@ class AddressCubit extends Cubit<AddressState> {
   final ShowAddressUseCase _showAddressUseCase = sl();
   final GetAddressListUseCase _getAddressListUseCase = sl();
   final UpdateDefaultAddressUseCase _updateDefaultAddressUseCase = sl();
-  // final GoogleMapsServices _mapService = sl();
+  final GoogleMapsServices _mapService = sl();
 
   AddressCubit() : super(AddressInitial());
 
   static AddressCubit get(context) => BlocProvider.of(context);
 
-  Completer<GoogleMapController> controller = Completer();
   Set<Marker> markers = {};
 
   String? isDefault;
@@ -123,51 +125,63 @@ class AddressCubit extends Cubit<AddressState> {
   Position? userCurrentPosition;
 
   bool getUserLocationLoading = false;
-  // void getCurrentPosition() async {
-  //   markers ={};
-  //   getUserLocationLoading = true;
-  //   emit(GetCurrentLocationLoading());
-  //   try{
-  //     print("entered");
-  //      // print(await MapService.getCurrentPosition());
-  //      userCurrentPosition = await _mapService.getCurrentPosition();
-  //     print(userCurrentPosition);
-  //     markers.add(
-  //       Marker(
-  //         markerId: MarkerId(userCurrentPosition.toString()),
-  //         position: LatLng(
-  //           userCurrentPosition!.latitude,
-  //           userCurrentPosition!.longitude,
-  //         ),
-  //         infoWindow: InfoWindow(
-  //           title: 'Marker ${markers.length + 1}',
-  //           snippet: 'This is a new marker',
-  //         ),
-  //       ),
-  //     );
-  //     getUserLocationLoading = false;
-  //     emit(GetCurrentLocationPositionSuccess());
-  //   }catch(e) {
-  //     getUserLocationLoading = false;
-  //     emit(GetCurrentLocationPositionError());
-  //     print(e);
-  //   }
-  // }
-  //
-  // void addMarker(LatLng pos) async{
-  //   markers = {};
-  //   final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
-  //  print(address);
-  //   markers.add(
-  //     Marker(
-  //       markerId: MarkerId(pos.toString()),
-  //       position: pos,
-  //       infoWindow: InfoWindow(
-  //         title: address[0].country,
-  //         snippet: address[0].locality,
-  //       ),
-  //     ),
-  //   );
-  //   emit(AddMarker());
-  // }
+  void getCurrentPosition() async {
+    markers ={};
+    getUserLocationLoading = true;
+    emit(GetCurrentLocationLoading());
+    try{
+      print("entered");
+       // print(await MapService.getCurrentPosition());
+       userCurrentPosition = await _mapService.getCurrentPosition();
+      print(userCurrentPosition);
+      markers.add(
+        Marker(
+          markerId: MarkerId(userCurrentPosition.toString()),
+          position: LatLng(
+            userCurrentPosition!.latitude,
+            userCurrentPosition!.longitude,
+          ),
+          infoWindow: InfoWindow(
+            title: 'Marker ${markers.length + 1}',
+            snippet: 'This is a new marker',
+          ),
+        ),
+      );
+      getUserLocationLoading = false;
+      emit(GetCurrentLocationPositionSuccess());
+    }catch(e) {
+      getUserLocationLoading = false;
+      emit(GetCurrentLocationPositionError());
+      print(e);
+    }
+  }
+
+  void addMarker(LatLng pos) async{
+    markers = {};
+    final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
+   print(address);
+    markers.add(
+      Marker(
+        markerId: MarkerId(pos.toString()),
+        position: pos,
+        infoWindow: InfoWindow(
+          title: address[0].country,
+          snippet: address[0].locality,
+        ),
+      ),
+    );
+    emit(AddMarker());
+  }
+  @override
+  Future<void> close() {
+    return super.close();
+  }
+  final dio = Dio();
+  List<PlaceResult> searchResults = [];
+  void searchPlaces(String query) async {
+    emit(GetSearchedLocationsLoading());
+    searchResults = await _mapService.searchPlaces(query);
+    emit(GetSearchedLocationsSuccess());
+  }
+
 }

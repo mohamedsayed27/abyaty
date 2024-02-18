@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               listener: (context, state) {
                 if (state is RegisterSuccess) {
                   messenger.showSnackBar(
-                    CustomSnackBar(
+                    customSnackBar(
                       context,
                       text: state.registerEntity.message ?? "تم التسجيل بنجاح",
                       textAlign: TextAlign.center,
@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 }
                 if (state is RegisterError) {
                   messenger.showSnackBar(
-                    CustomSnackBar(
+                    customSnackBar(
                       context,
                       text: state.error,
                       textAlign: TextAlign.center,

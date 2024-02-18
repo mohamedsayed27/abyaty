@@ -16,16 +16,18 @@ class ConfirmLocationBottomSheet extends StatefulWidget {
   const ConfirmLocationBottomSheet({super.key});
 
   @override
-  State<ConfirmLocationBottomSheet> createState() => _ConfirmLocationBottomSheetState();
+  State<ConfirmLocationBottomSheet> createState() =>
+      _ConfirmLocationBottomSheetState();
 }
 
-class _ConfirmLocationBottomSheetState extends State<ConfirmLocationBottomSheet> {
-
+class _ConfirmLocationBottomSheetState
+    extends State<ConfirmLocationBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom),
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -94,7 +96,8 @@ class _ConfirmLocationBottomSheetState extends State<ConfirmLocationBottomSheet>
               ),
               PrimaryColorElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, ScreenName.mainLayoutScreen, (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, ScreenName.mainLayoutScreen, (route) => false);
                 },
                 text: "Confirm",
               ),

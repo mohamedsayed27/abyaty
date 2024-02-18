@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +42,16 @@ class _ChooseAddressLocationScreenState
   @override
   void initState() {
     final cubit = AddressCubit.get(context);
-    // cubit.getCurrentPosition();
+    cubit.getCurrentPosition();
     super.initState();
+  }
+
+  late GoogleMapController mapController;
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
   }
 
   @override
@@ -143,7 +153,11 @@ class _ChooseAddressLocationScreenState
                     const CustomSizedBox(
                       height: 8,
                     ),
-                    const SearchLocationField(),
+                    SearchLocationField(
+                      onSubmitted: (value){
+                        cubit.searchPlaces(value);
+                      },
+                    ),
                   ],
                 ).symmetricPadding(horizontal: 16),
                 const CustomSizedBox(
@@ -161,15 +175,59 @@ class _ChooseAddressLocationScreenState
                               markers: cubit.markers,
                               myLocationButtonEnabled: false,
                               onMapCreated: (GoogleMapController controller) {
-                                cubit.controller.complete(controller);
+                                mapController = controller;
                               },
-                              // onTap: cubit.addMarker,
+                              onTap: cubit.addMarker,
                               initialCameraPosition: CameraPosition(
                                 target: LatLng(
-                                  cubit.userCurrentPosition?.latitude??0,
-                                  cubit.userCurrentPosition?.longitude??0,
+                                  cubit.userCurrentPosition?.latitude ?? 0,
+                                  cubit.userCurrentPosition?.longitude ?? 0,
                                 ),
                                 zoom: 11.5,
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: SizedBox(
+                                height: 200,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  separatorBuilder: (_,index){
+                                    return CustomSizedBox(
+                                      height: 16,
+                                    );
+                                  },
+                                  itemCount: cubit.searchResults.length,
+                                  itemBuilder: (context, index) {
+                                    // PlacesSearchResult result = cubit.searchResults[index];
+                                    return ListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.r),
+                                      ),
+
+                                      tileColor: AppColors.whiteColor,
+                                      title: Text(cubit.searchResults[index].name??""),
+                                      subtitle: Text(cubit.searchResults[index].formattedAddress ?? ''),
+                                      onTap: () {
+                                        // Handle item selection here, for example, navigate to the selected place on the map
+                                        mapController.animateCamera(
+                                          CameraUpdate.newCameraPosition(
+                                            CameraPosition(
+                                              target: LatLng(
+                                                cubit.searchResults[index].geometry?.location.lat??0,
+                                                cubit.searchResults[index].geometry?.location.lng??0,
+                                              ),
+                                              zoom: 15,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                  },
+                                ),
                               ),
                             ),
                             Column(

@@ -74,7 +74,7 @@ String? userId = CacheHelper.getData(
   key: CacheKeys.userId,
 );
 
-SnackBar CustomSnackBar(
+SnackBar customSnackBar(
   context, {
   required String text,
   TextStyle? textStyle,

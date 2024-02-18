@@ -6,7 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/app_theme/custom_themes.dart';
 
 class SearchLocationField extends StatelessWidget {
-  const SearchLocationField({super.key});
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
+
+  final TextEditingController? controller;
+  const SearchLocationField({super.key, this.onChanged, this.onSubmitted, this.controller,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +24,24 @@ class SearchLocationField extends StatelessWidget {
     return SizedBox(
       height: 44.h,
       child: TextField(
+        onChanged: onChanged,
+        controller: controller,
+        onSubmitted: onSubmitted,
         decoration: InputDecoration(
-          fillColor: Colors.white,
-          contentPadding: EdgeInsets.all(12.r),
-          filled: true,
-          border: border,
-          focusedBorder: border,
-          enabledBorder: border,
-          hintText: "The Location",
-          hintStyle: CustomThemes.authHintTextTheme(context).copyWith(fontSize: 14.sp),
-          prefixIcon: Padding(
-            padding: EdgeInsets.all(13.0.r),
-            child: SvgPicture.asset(SvgPath.searchIcon,height: 16.h,width: 16.w,),
-          )
+            fillColor: Colors.white,
+            contentPadding: EdgeInsets.all(12.r),
+            filled: true,
+            border: border,
+            focusedBorder: border,
+            enabledBorder: border,
+            hintText: "The Location",
+            hintStyle: CustomThemes.authHintTextTheme(context).copyWith(
+                fontSize: 14.sp),
+            prefixIcon: Padding(
+              padding: EdgeInsets.all(13.0.r),
+              child: SvgPicture.asset(
+                SvgPath.searchIcon, height: 16.h, width: 16.w,),
+            )
         ),
       ),
     );

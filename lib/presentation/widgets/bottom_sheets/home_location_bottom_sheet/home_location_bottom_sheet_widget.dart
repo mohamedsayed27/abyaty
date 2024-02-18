@@ -1,10 +1,13 @@
+import 'package:abyaty/core/assets_path/svg_path.dart';
 import 'package:abyaty/core/constants/constants.dart';
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/primary_color_elevated_button.dart';
+import 'package:abyaty/presentation/widgets/shared_widgets/primary_color_outlined_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app_router/screens_name.dart';
 import '../../../../core/app_theme/app_colors.dart';
@@ -86,8 +89,34 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                       ),
                     ],
                   ),
-                  const CustomSizedBox(
-                    height: 8,
+                  CustomSizedBox(
+                    height: cubit.addressList.isEmpty?64:8,
+                  ),
+                  Visibility(
+                    visible: cubit.addressList.isEmpty,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          SvgPath.locationSlash,
+                          height: 16.h,
+                          width: 16.w,
+                        ),
+                        CustomSizedBox(width: 4,),
+                        Expanded(
+                          child: Text(
+                            "It seems you didn’t enter any address before",
+                            textAlign: TextAlign.center,
+                            style: CustomThemes.greyColor80TextTheme(context)
+                                .copyWith(
+                              height: 1,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        )
+                      ],
+                    ).symmetricPadding(horizontal: 80-8),
                   ),
                   ListView.separated(
                     shrinkWrap: true,
@@ -107,8 +136,8 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                           cubit.addressMap[cubit.addressList[index].id] == "1",
                     ),
                   ),
-                  const CustomSizedBox(
-                    height: 40,
+                   CustomSizedBox(
+                     height: cubit.addressList.isEmpty?64:40,
                   ),
                   Visibility(
                     visible: cubit.addressList.isNotEmpty,
@@ -122,6 +151,19 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                                   cubit.changeAddress!.id!);
                             }
                           : null,
+                    ),
+                  ),
+                  Visibility(
+                    visible: cubit.addressList.isEmpty,
+                    child: PrimaryColorOutlinedButton(
+                      text: "Add New Address",
+                      onPressed: (){
+                        if(token==null){
+                          Navigator.pushNamed(context, ScreenName.loginScreen);
+                        }else{
+                          Navigator.pushNamed(context, ScreenName.chooseAddressLocationScreen,arguments: false,);
+                        }
+                      },
                     ),
                   ),
                   const CustomSizedBox(

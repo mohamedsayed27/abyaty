@@ -28,7 +28,7 @@ class TryScreen extends StatelessWidget {
             return PrimaryColorElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(CustomSnackBar(context, text: "dacs",backgroundColor: AppColors.errorBackgroundColor));
+                    .showSnackBar(customSnackBar(context, text: "dacs",backgroundColor: AppColors.errorBackgroundColor));
               },
             );
           },
