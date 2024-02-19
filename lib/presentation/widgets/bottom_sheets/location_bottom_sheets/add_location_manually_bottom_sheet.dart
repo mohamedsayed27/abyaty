@@ -138,7 +138,7 @@ class _AddLocationManuallyBottomSheetState
                               isDefault: cubit.isDefault == null
                                   ? "0"
                                   : cubit.isDefault!,
-                              userId: userId,
+                              userId: int.parse(userId.toString()),
                             ),
                           );
                         }

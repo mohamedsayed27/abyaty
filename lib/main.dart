@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (_) => MainLayoutCubit()),
             BlocProvider(create: (_) => ProductCubit()),
             BlocProvider(create: (_) => AuthCubit()),
-            BlocProvider(create: (_) => AddressCubit()),
+            BlocProvider(create: (_) => AddressCubit()..getCurrentMarker()),
           ],
           child: MaterialApp(
             title: 'Abyati',

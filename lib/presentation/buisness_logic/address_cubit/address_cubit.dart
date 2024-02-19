@@ -1,13 +1,12 @@
-import 'dart:async';
-
 import 'package:abyaty/core/base_use_case/base_use_case.dart';
-import 'package:abyaty/core/network/dio_helper.dart';
 import 'package:abyaty/core/parameters/address_parameters.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../core/assets_path/images_path.dart';
+import '../../../core/constants/route_exports.dart';
 import '../../../core/services/maps_services.dart';
 import '../../../core/services/services_locator.dart';
 import '../../../data/models/address_model/place_result_model.dart';
@@ -35,14 +34,43 @@ class AddressCubit extends Cubit<AddressState> {
 
   Set<Marker> markers = {};
 
+  /// Add Location Manually Text editing controllers
+  final TextEditingController addManuallyLabel = TextEditingController();
+  final TextEditingController addManuallyDetails = TextEditingController();
+  final TextEditingController addManuallyArea = TextEditingController();
+  final TextEditingController addManuallyFloorNumber = TextEditingController();
+  final TextEditingController addManuallyFlatNumber = TextEditingController();
+
+  /// Confirm Location Text editing controllers
+  final TextEditingController confirmLocationLabel = TextEditingController();
+  final TextEditingController confirmLocationDetails = TextEditingController();
+  final TextEditingController confirmLocationFloorNumber =
+      TextEditingController();
+  final TextEditingController confirmLocationFlatNumber =
+      TextEditingController();
+
+  late GoogleMapController mapController;
   String? isDefault;
+
   void postAddress(AddressParameters parameters) async {
     emit(PostAddressLoading());
     final response = await _postAddressUseCase(parameters);
     response.fold((l) {
-      emit(PostAddressError(error: l.baseErrorModel.message??""));
+      print(l);
+      emit(PostAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       emit(PostAddressSuccess());
+    });
+  }
+
+  BitmapDescriptor currentIcon = BitmapDescriptor.defaultMarker;
+
+  void getCurrentMarker() {
+    BitmapDescriptor.fromAssetImage(
+      ImageConfiguration.empty,
+      ImagesPath.locationTick,
+    ).then((value) {
+      currentIcon = value;
     });
   }
 
@@ -54,7 +82,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(UpdateAddressLoading());
     final response = await _updateAddressUseCase(parameters);
     response.fold((l) {
-      emit(UpdateAddressError(error: l.baseErrorModel.message??""));
+      emit(UpdateAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       emit(UpdateAddressSuccess());
     });
@@ -64,7 +92,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(DeleteAddressLoading());
     final response = await _deleteAddressUseCase(id);
     response.fold((l) {
-      emit(DeleteAddressError(error: l.baseErrorModel.message??""));
+      emit(DeleteAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       emit(DeleteAddressSuccess());
     });
@@ -74,7 +102,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(ShowAddressLoading());
     final response = await _showAddressUseCase(id);
     response.fold((l) {
-      emit(ShowAddressError(error: l.baseErrorModel.message??""));
+      emit(ShowAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       emit(ShowAddressSuccess());
     });
@@ -85,7 +113,7 @@ class AddressCubit extends Cubit<AddressState> {
     emit(GetListAddressLoading());
     final response = await _getAddressListUseCase(const NoParameters());
     response.fold((l) {
-      emit(GetListAddressError(error: l.baseErrorModel.message??""));
+      emit(GetListAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       if (r.addressList != null) {
         addressList = r.addressList!;
@@ -105,7 +133,9 @@ class AddressCubit extends Cubit<AddressState> {
   void updateDefaultAddressLocally(
       AddressDetailsEntity? addressDetailsEntity) async {
     addressMap.updateAll((key, value) => value = '0');
-    if(addressDetailsEntity!=null)addressMap.update(addressDetailsEntity.id!, (value) => '1');
+    if (addressDetailsEntity != null) {
+      addressMap.update(addressDetailsEntity.id!, (value) => '1');
+    }
     changeAddress = addressDetailsEntity;
     emit(UpdateDefaultAddressLocally());
   }
@@ -115,7 +145,7 @@ class AddressCubit extends Cubit<AddressState> {
     final response = await _updateDefaultAddressUseCase(addressId);
     response.fold((l) {
       print(l);
-      emit(UpdateDefaultAddressError(error: l.baseErrorModel.message??""));
+      emit(UpdateDefaultAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       getAddressList();
       emit(UpdateDefaultAddressSuccess());
@@ -125,63 +155,93 @@ class AddressCubit extends Cubit<AddressState> {
   Position? userCurrentPosition;
 
   bool getUserLocationLoading = false;
+
   void getCurrentPosition() async {
-    markers ={};
+    markers = {};
     getUserLocationLoading = true;
     emit(GetCurrentLocationLoading());
-    try{
-      print("entered");
-       // print(await MapService.getCurrentPosition());
-       userCurrentPosition = await _mapService.getCurrentPosition();
-      print(userCurrentPosition);
-      markers.add(
-        Marker(
-          markerId: MarkerId(userCurrentPosition.toString()),
-          position: LatLng(
-            userCurrentPosition!.latitude,
-            userCurrentPosition!.longitude,
-          ),
-          infoWindow: InfoWindow(
-            title: 'Marker ${markers.length + 1}',
-            snippet: 'This is a new marker',
-          ),
+    try {
+      // print(await MapService.getCurrentPosition());
+      userCurrentPosition = await _mapService.getCurrentPosition();
+
+      addMarker(
+        LatLng(
+          userCurrentPosition!.latitude,
+          userCurrentPosition!.longitude,
         ),
       );
       getUserLocationLoading = false;
       emit(GetCurrentLocationPositionSuccess());
-    }catch(e) {
+    } catch (e) {
       getUserLocationLoading = false;
       emit(GetCurrentLocationPositionError());
-      print(e);
     }
   }
 
-  void addMarker(LatLng pos) async{
+  LocationDescription? locationDetails;
+
+  void addMarker(LatLng pos) async {
     markers = {};
-    final address = await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
-   print(address);
+    final country =
+        await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
+    final address = await getLocationDescription(pos);
     markers.add(
       Marker(
         markerId: MarkerId(pos.toString()),
         position: pos,
+        icon: currentIcon,
         infoWindow: InfoWindow(
-          title: address[0].country,
-          snippet: address[0].locality,
+          title: country[0].country,
+          snippet: address?.formattedAddress??"",
         ),
       ),
     );
+    ;
     emit(AddMarker());
   }
-  @override
-  Future<void> close() {
-    return super.close();
+
+  Future<LocationDescription?> getLocationDescription(LatLng pos) async{
+    emit(GetLocationDescriptionLoading());
+    locationDetails = await _mapService.getLocationDescription(pos.latitude, pos.longitude,);
+    emit(GetLocationDescriptionSuccess());
+    return locationDetails;
   }
   final dio = Dio();
   List<PlaceResult> searchResults = [];
+
   void searchPlaces(String query) async {
     emit(GetSearchedLocationsLoading());
     searchResults = await _mapService.searchPlaces(query);
     emit(GetSearchedLocationsSuccess());
   }
 
+  void clearSearchedResult() async {
+    searchResults.clear();
+    emit(ClearSearchedAddressList());
+  }
+
+  void animateCameraToPosition({
+    required double lat,
+    required double lng,
+  }) async {
+    markers.clear();
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            lat,
+            lng,
+          ),
+          zoom: 15,
+        ),
+      ),
+    );
+    addMarker(
+      LatLng(
+        lat,
+        lng,
+      ),
+    );
+    emit(AnimateCameraToPosition());
+  }
 }

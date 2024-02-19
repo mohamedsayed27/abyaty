@@ -1,14 +1,15 @@
-import 'dart:async';
-
+import 'package:abyaty/core/constants/constants.dart';
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../core/app_router/screens_name.dart';
 import '../../../core/app_theme/app_colors.dart';
 import '../../../core/app_theme/custom_themes.dart';
+import '../../../core/assets_path/svg_path.dart';
 import '../../../translations/locale_keys.g.dart';
 import '../../buisness_logic/address_cubit/address_cubit.dart';
 import '../../buisness_logic/address_cubit/address_state.dart';
@@ -46,11 +47,11 @@ class _ChooseAddressLocationScreenState
     super.initState();
   }
 
-  late GoogleMapController mapController;
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void dispose() {
-    mapController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -61,7 +62,18 @@ class _ChooseAddressLocationScreenState
       body: BlurryBackground(
         child: BlocConsumer<AddressCubit, AddressState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state is GetSearchedLocationsLoading) {
+              showProgressIndicator(context);
+            }
+            if (state is GetSearchedLocationsSuccess) {
+              Navigator.pop(context);
+            }
+            if (state is GetLocationDescriptionLoading) {
+              showProgressIndicator(context);
+            }
+            if (state is GetLocationDescriptionSuccess) {
+              Navigator.pop(context);
+            }
           },
           builder: (context, state) {
             AddressCubit cubit = AddressCubit.get(context);
@@ -154,9 +166,20 @@ class _ChooseAddressLocationScreenState
                       height: 8,
                     ),
                     SearchLocationField(
-                      onSubmitted: (value){
+                      onSubmitted: (value) {
                         cubit.searchPlaces(value);
                       },
+                      controller: searchController,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          cubit.clearSearchedResult();
+                          searchController.clear();
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          size: 18.r,
+                        ),
+                      ),
                     ),
                   ],
                 ).symmetricPadding(horizontal: 16),
@@ -175,7 +198,7 @@ class _ChooseAddressLocationScreenState
                               markers: cubit.markers,
                               myLocationButtonEnabled: false,
                               onMapCreated: (GoogleMapController controller) {
-                                mapController = controller;
+                                cubit.mapController = controller;
                               },
                               onTap: cubit.addMarker,
                               initialCameraPosition: CameraPosition(
@@ -186,55 +209,11 @@ class _ChooseAddressLocationScreenState
                                 zoom: 11.5,
                               ),
                             ),
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              child: SizedBox(
-                                height: 200,
-                                child: ListView.separated(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  separatorBuilder: (_,index){
-                                    return CustomSizedBox(
-                                      height: 16,
-                                    );
-                                  },
-                                  itemCount: cubit.searchResults.length,
-                                  itemBuilder: (context, index) {
-                                    // PlacesSearchResult result = cubit.searchResults[index];
-                                    return ListTile(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16.r),
-                                      ),
-
-                                      tileColor: AppColors.whiteColor,
-                                      title: Text(cubit.searchResults[index].name??""),
-                                      subtitle: Text(cubit.searchResults[index].formattedAddress ?? ''),
-                                      onTap: () {
-                                        // Handle item selection here, for example, navigate to the selected place on the map
-                                        mapController.animateCamera(
-                                          CameraUpdate.newCameraPosition(
-                                            CameraPosition(
-                                              target: LatLng(
-                                                cubit.searchResults[index].geometry?.location.lat??0,
-                                                cubit.searchResults[index].geometry?.location.lng??0,
-                                              ),
-                                              zoom: 15,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-
-                                  },
-                                ),
-                              ),
-                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 PrimaryColorElevatedButton(
-                                  onPressed: () {
+                                  onPressed:cubit.markers.isNotEmpty? () {
                                     showModalBottomSheet(
                                       context: context,
                                       backgroundColor: Colors.white,
@@ -251,7 +230,7 @@ class _ChooseAddressLocationScreenState
                                         return const ConfirmLocationBottomSheet();
                                       },
                                     );
-                                  },
+                                  }:null,
                                   height: 48,
                                   text: LocaleKeys.confirmLocation.tr(),
                                 ),
@@ -292,7 +271,71 @@ class _ChooseAddressLocationScreenState
                                   elevation: 0,
                                 ),
                               ],
-                            ).symmetricPadding(horizontal: 16, vertical: 56)
+                            ).symmetricPadding(horizontal: 16, vertical: 56),
+                            if (cubit.searchResults.isNotEmpty)
+                              Positioned.fill(
+                                child: Container(
+                                  color: AppColors.whiteColor,
+                                  child: ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    separatorBuilder: (_, index) {
+                                      return const CustomSizedBox(
+                                        height: 8,
+                                      );
+                                    },
+                                    itemCount: cubit.searchResults.length,
+                                    // shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () {
+                                          // Handle item selection here, for example, navigate to the selected place on the map
+
+                                          cubit.animateCameraToPosition(
+                                            lat: cubit.searchResults[index]
+                                                    .geometry?.location.lat ??
+                                                0,
+                                            lng: cubit.searchResults[index]
+                                                    .geometry?.location.lng ??
+                                                0,
+                                          );
+                                          cubit.clearSearchedResult();
+                                        },
+                                        leading: SvgPicture.asset(
+                                          SvgPath.addressLocation,
+                                          colorFilter: const ColorFilter.mode(
+                                            AppColors.secondaryColor,
+                                            BlendMode.srcIn,
+                                          ),
+                                          height: 16.h,
+                                          width: 16.w,
+                                        ),
+                                        title: Text(
+                                          cubit.searchResults[index].name ?? "",
+                                          style:
+                                              CustomThemes.greyColor1ATextTheme(
+                                                      context)
+                                                  .copyWith(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          cubit.searchResults[index]
+                                                  .formattedAddress ??
+                                              '',
+                                          style:
+                                              CustomThemes.greyColor80TextTheme(
+                                                      context)
+                                                  .copyWith(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
                 ),

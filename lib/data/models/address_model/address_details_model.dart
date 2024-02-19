@@ -21,7 +21,7 @@ class AddressDetailsModel extends AddressDetailsEntity {
       floorNumber: json["floor_number"],
       flatNumber: json["flat_number"],
       isDefault: json["is_default"],
-      userId: json["user_id"],
+      userId: int.parse(json["user_id"].toString(),),
     );
   }
   Map<String, dynamic> toJson() {

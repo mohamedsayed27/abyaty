@@ -11,9 +11,22 @@ import '../../buisness_logic/address_cubit/address_cubit.dart';
 import '../../buisness_logic/address_cubit/address_state.dart';
 import '../bottom_sheets/home_location_bottom_sheet/home_location_bottom_sheet_widget.dart';
 
-class AddressLocationWidget extends StatelessWidget {
+class AddressLocationWidget extends StatefulWidget {
   const AddressLocationWidget({super.key});
 
+  @override
+  State<AddressLocationWidget> createState() => _AddressLocationWidgetState();
+}
+
+class _AddressLocationWidgetState extends State<AddressLocationWidget> {
+  @override
+  void initState() {
+    AddressCubit cubit =AddressCubit.get(context);
+    if(cubit.addressList.isEmpty){
+      AddressCubit.get(context).getAddressList();
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddressCubit, AddressState>(

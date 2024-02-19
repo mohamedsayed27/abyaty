@@ -29,81 +29,83 @@ class HomeScreen extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {},
-        child: ListView(
-          children: [
-            const AddressLocationWidget(),
-            const CarouselSliderWidget(),
-            const CustomSizedBox(
-              height: 8,
-            ),
-            BlocConsumer<MainLayoutCubit, MainLayoutState>(
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              builder: (context, state) {
-                var cubit = MainLayoutCubit.get(context);
-                return ComponentTitleWidget(
-                  componentTitle: LocaleKeys.shopByCategories,
-                  isSeeAll: true,
-                  onSeeAllPressed: (){
-                    cubit.changeCurrentIndex(1);
-                  },
-                );
-              },
-            ).symmetricPadding(horizontal: 16),
-            const CustomSizedBox(
-              height: 4,
-            ),
-            const CategoriesGridViewComponent(shrinkWrap: true),
-            const CustomSizedBox(
-              height: 24,
-            ),
-            const CustomDividerWidget(),
-            const CustomSizedBox(
-              height: 24,
-            ),
-            const ComponentTitleWidget(
-              componentTitle: LocaleKeys.bankAndWalletOffer,
-              isSeeAll: false,
-            ).symmetricPadding(horizontal: 16),
-            const CustomSizedBox(
-              height: 16,
-            ),
-            const BankWalletListViewComponent()
-                .symmetricPadding(horizontal: 16),
-            const CustomSizedBox(
-              height: 24,
-            ),
-            const CustomDividerWidget(),
-            const CustomSizedBox(
-              height: 8,
-            ),
-            ComponentTitleWidget(
-              componentTitle: LocaleKeys.topSellingProducts,
-              isSeeAll: true,
-              onSeeAllPressed: () {},
-            ).symmetricPadding(horizontal: 16),
-            const CustomSizedBox(
-              height: 4,
-            ),
-            const TopSellingProductsGridComponent(),
-            const CustomSizedBox(
-              height: 24,
-            ),
-            const CustomDividerWidget(),
-            const CustomSizedBox(
-              height: 8,
-            ),
-            ComponentTitleWidget(
-              componentTitle: LocaleKeys.blog,
-              isSeeAll: true,
-              onSeeAllPressed: () {},
-            ).symmetricPadding(horizontal: 16),
-            const HomeBlogsListViewComponent().symmetricPadding(horizontal: 16),
-            const CustomSizedBox(
-              height: 8,
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const AddressLocationWidget(),
+              const CarouselSliderWidget(),
+              const CustomSizedBox(
+                height: 8,
+              ),
+              BlocConsumer<MainLayoutCubit, MainLayoutState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  var cubit = MainLayoutCubit.get(context);
+                  return ComponentTitleWidget(
+                    componentTitle: LocaleKeys.shopByCategories,
+                    isSeeAll: true,
+                    onSeeAllPressed: (){
+                      cubit.changeCurrentIndex(1);
+                    },
+                  );
+                },
+              ).symmetricPadding(horizontal: 16),
+              const CustomSizedBox(
+                height: 4,
+              ),
+              const CategoriesGridViewComponent(shrinkWrap: true),
+              const CustomSizedBox(
+                height: 24,
+              ),
+              const CustomDividerWidget(),
+              const CustomSizedBox(
+                height: 24,
+              ),
+              const ComponentTitleWidget(
+                componentTitle: LocaleKeys.bankAndWalletOffer,
+                isSeeAll: false,
+              ).symmetricPadding(horizontal: 16),
+              const CustomSizedBox(
+                height: 16,
+              ),
+              const BankWalletListViewComponent()
+                  .symmetricPadding(horizontal: 16),
+              const CustomSizedBox(
+                height: 24,
+              ),
+              const CustomDividerWidget(),
+              const CustomSizedBox(
+                height: 8,
+              ),
+              ComponentTitleWidget(
+                componentTitle: LocaleKeys.topSellingProducts,
+                isSeeAll: true,
+                onSeeAllPressed: () {},
+              ).symmetricPadding(horizontal: 16),
+              const CustomSizedBox(
+                height: 4,
+              ),
+              const TopSellingProductsGridComponent(),
+              const CustomSizedBox(
+                height: 24,
+              ),
+              const CustomDividerWidget(),
+              const CustomSizedBox(
+                height: 8,
+              ),
+              ComponentTitleWidget(
+                componentTitle: LocaleKeys.blog,
+                isSeeAll: true,
+                onSeeAllPressed: () {},
+              ).symmetricPadding(horizontal: 16),
+              const HomeBlogsListViewComponent().symmetricPadding(horizontal: 16),
+              const CustomSizedBox(
+                height: 8,
+              ),
+            ],
+          ),
         ),
       ),
     );

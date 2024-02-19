@@ -31,4 +31,5 @@ class ImagesPath{
   static const team1 = 'assets/images/team1.png';
   static const team2 = 'assets/images/team2.png';
   static const team3 = 'assets/images/team3.png';
+  static const locationTick = 'assets/images/locationTick.png';
 }

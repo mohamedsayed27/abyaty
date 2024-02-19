@@ -8,9 +8,9 @@ import '../../../core/app_theme/custom_themes.dart';
 class SearchLocationField extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
-
+  final Widget? suffixIcon;
   final TextEditingController? controller;
-  const SearchLocationField({super.key, this.onChanged, this.onSubmitted, this.controller,});
+  const SearchLocationField({super.key, this.onChanged, this.onSubmitted, this.controller, this.suffixIcon,});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,13 @@ class SearchLocationField extends StatelessWidget {
         onChanged: onChanged,
         controller: controller,
         onSubmitted: onSubmitted,
+        style: CustomThemes.greyColo4DTextTheme(context).copyWith(
+            fontSize: 14.sp),
         decoration: InputDecoration(
             fillColor: Colors.white,
             contentPadding: EdgeInsets.all(12.r),
             filled: true,
+            suffixIcon: suffixIcon,
             border: border,
             focusedBorder: border,
             enabledBorder: border,

@@ -13,13 +13,13 @@ class FormItemWidget extends StatelessWidget {
   final String hintText;
   final bool isRequired;
   final bool enabled;
-
+  final String? Function(String?)? validator;
   const FormItemWidget({
     super.key,
     this.controller,
     required this.title,
     required this.hintText,
-    this.isRequired = false, this.enabled = true,
+    this.isRequired = false, this.enabled = true, this.validator,
   });
 
   @override
@@ -52,6 +52,7 @@ class FormItemWidget extends StatelessWidget {
         CustomTextField(
           hintText: hintText,
           enabled: enabled,
+          validator: validator,
           filled: enabled==false?true:null,
           fillColor: enabled==false?AppColors.authHintTextColor:null,
           controller: controller,

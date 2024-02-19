@@ -12,7 +12,7 @@ class GetAddressListModel extends GetAddressListEntity {
   factory GetAddressListModel.fromJson(Map<String, dynamic> json) {
       List<AddressDetailsModel> result =[];
       json['result'].forEach((v) {
-        result.add(new AddressDetailsModel.fromJson(v));
+        result.add(AddressDetailsModel.fromJson(v));
       });
     return GetAddressListModel(
       success: json["success"],

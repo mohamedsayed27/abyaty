@@ -30,6 +30,8 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+
+    final messenger = ScaffoldMessenger.of(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -48,7 +50,16 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
               }
               if (state is UpdateDefaultAddressError) {
                 Navigator.pop(context);
+                Navigator.pop(context);
                 cubit.updateDefaultAddressLocally(cubit.defaultAddress!);
+                messenger.showSnackBar(
+                  customSnackBar(
+                    context,
+                    text: state.error ?? "تم تسجيل الدخول بنجاح",
+                    textAlign: TextAlign.center,
+                    backgroundColor: AppColors.redColor,
+                  ),
+                );
               }
             },
             builder: (context, state) {

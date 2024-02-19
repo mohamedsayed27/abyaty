@@ -83,7 +83,6 @@ class GoogleMapsServices {
     final response = await _dio.get(
       url,
     );
-    print(response);
     List<PlaceResult> searchResults = [];
     if (response.statusCode == 200) {
       final predictions = response.data['results'] as List<dynamic>;
@@ -92,7 +91,30 @@ class GoogleMapsServices {
     } else {
       searchResults = [];
     }
-    print(searchResults);
     return searchResults;
+  }
+  Future<LocationDescription> getLocationDescription(double latitude, double longitude) async {
+    const apiKey = 'AIzaSyDnQkxNT4gLawqHzZNM0q2JSbOGXu3mZpw';
+    final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&language=ar&key=$apiKey';
+
+    final response = await _dio.get(
+      url,
+    );
+    if (response.statusCode == 200) {
+      return LocationDescription.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load location description');
+    }
+  }
+}
+class LocationDescription {
+  final String? formattedAddress;
+
+  LocationDescription({this.formattedAddress});
+
+  factory LocationDescription.fromJson(Map<String, dynamic> json) {
+    return LocationDescription(
+      formattedAddress: json['results'][0]['formatted_address'],
+    );
   }
 }

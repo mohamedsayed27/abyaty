@@ -1,3 +1,4 @@
+import 'package:abyaty/data/models/address_model/address_details_model.dart';
 import 'package:abyaty/domain/entities/address_entity/address_response_entity.dart';
 
 class AddressResponseModel extends AddressResponseEntity {
@@ -13,7 +14,7 @@ class AddressResponseModel extends AddressResponseEntity {
       success: json["success"],
       code: json["code"],
       message: json["message"],
-      addressDetailsEntity: json["result"],
+      addressDetailsEntity: AddressDetailsModel.fromJson(json["result"],),
     );
   }
 }

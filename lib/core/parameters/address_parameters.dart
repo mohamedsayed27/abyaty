@@ -13,15 +13,14 @@ class AddressParameters extends AddressDetailsEntity {
   });
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['lable'] = lable;
+    if(id!=null)data['id'] = id;
     data['label'] = lable;
     data['area'] = area;
     data['details'] = details;
     data['floor_number'] = floorNumber;
     data['flat_number'] = flatNumber;
     data['is_default'] = isDefault;
-    data['user_id'] = userId;
+    // data['user_id'] = userId;
     return data;
   }
 }

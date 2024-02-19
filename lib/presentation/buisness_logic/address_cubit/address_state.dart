@@ -65,7 +65,11 @@ class GetCurrentLocationLoading extends AddressState {}
 class GetCurrentLocationPositionSuccess extends AddressState {}
 class GetCurrentLocationPositionError extends AddressState {}
 class AddMarker extends AddressState {}
+class GetLocationDescriptionLoading extends AddressState {}
+class GetLocationDescriptionSuccess extends AddressState {}
 class GetSearchedLocationsLoading extends AddressState {}
+class ClearSearchedAddressList extends AddressState {}
+class AnimateCameraToPosition extends AddressState {}
 class GetSearchedLocationsSuccess extends AddressState {}
 class DeleteAddressLoading extends AddressState {}
 
