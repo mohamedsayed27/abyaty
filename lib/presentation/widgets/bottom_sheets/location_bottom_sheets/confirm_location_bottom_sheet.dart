@@ -1,3 +1,4 @@
+import 'package:abyaty/core/app_router/screens_name.dart';
 import 'package:abyaty/core/parameters/address_parameters.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +7,6 @@ import '../../../../core/constants/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/app_router/screens_name.dart';
 import '../../../../core/app_theme/app_colors.dart';
 import '../../../../core/app_theme/custom_themes.dart';
 import '../../../buisness_logic/address_cubit/address_cubit.dart';
@@ -40,6 +40,8 @@ class _ConfirmLocationBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    AddressCubit cubit = AddressCubit.get(context);
+    final messenger = ScaffoldMessenger.of(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -50,10 +52,21 @@ class _ConfirmLocationBottomSheetState
             key: formKey,
             child: BlocConsumer<AddressCubit, AddressState>(
               listener: (context, state) {
-                // TODO: implement listener
+                if(state is PostAddressLoading){
+                  showProgressIndicator(context);
+                }
+                if(state is PostAddressSuccess){
+                  Navigator.pushNamedAndRemoveUntil(context, ScreenName.mainLayoutScreen, (route) => false);
+                  messenger.showSnackBar(customSnackBar(context, text: state.addressResponseEntity.message??""));
+                  cubit.getAddressList();
+                }
+                if(state is PostAddressError){
+                  messenger.showSnackBar(customSnackBar(context, text: state.error??""));
+                  Navigator.pop(context);
+                }
               },
               builder: (context, state) {
-                AddressCubit cubit = AddressCubit.get(context);
+                // AddressCubit cubit = AddressCubit.get(context);
                 return Column(
                   children: [
                     Row(
@@ -147,6 +160,7 @@ class _ConfirmLocationBottomSheetState
                     const CustomSizedBox(
                       height: 16,
                     ),
+
                     const SaveAddressAsADefault(),
                     const CustomSizedBox(
                       height: 16,
@@ -164,7 +178,7 @@ class _ConfirmLocationBottomSheetState
                                   cubit.confirmLocationFloorNumber.text,
                               flatNumber: cubit.confirmLocationFlatNumber.text,
                               isDefault: cubit.isDefault,
-                              userId: int.parse(userId.toString()),
+                              userId: 20,
                             ),
                           );
                         }

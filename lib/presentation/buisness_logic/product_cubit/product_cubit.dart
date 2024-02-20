@@ -245,6 +245,7 @@ class ProductCubit extends Cubit<ProductState> {
 
   List<CategoryDetailsEntity>? categories = [];
   void getCategories() async {
+    categories = [];
     emit(GetCategoriesLoading());
     final response = await _getCategoriesListUseCase(const NoParameters());
     response.fold((l) {

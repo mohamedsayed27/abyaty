@@ -1,10 +1,16 @@
+import '../../../domain/entities/address_entity/address_response_entity.dart';
+
 abstract class AddressState {}
 
 class AddressInitial extends AddressState {}
 
 class PostAddressLoading extends AddressState {}
 
-class PostAddressSuccess extends AddressState {}
+class PostAddressSuccess extends AddressState {
+  final AddressResponseEntity addressResponseEntity;
+
+  PostAddressSuccess({required this.addressResponseEntity});
+}
 
 class PostAddressError extends AddressState {
   final String error;

@@ -19,7 +19,7 @@ class AddressParameters extends AddressDetailsEntity {
     data['details'] = details;
     data['floor_number'] = floorNumber;
     data['flat_number'] = flatNumber;
-    data['is_default'] = isDefault;
+    data['is_default'] = isDefault ?? "0";
     // data['user_id'] = userId;
     return data;
   }

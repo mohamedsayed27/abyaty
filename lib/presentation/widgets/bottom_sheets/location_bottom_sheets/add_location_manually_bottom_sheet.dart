@@ -1,3 +1,4 @@
+import '../../../../core/app_router/screens_name.dart';
 import '../../../../core/constants/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,16 +26,13 @@ class AddLocationManuallyBottomSheet extends StatefulWidget {
 
 class _AddLocationManuallyBottomSheetState
     extends State<AddLocationManuallyBottomSheet> {
-  final TextEditingController label = TextEditingController();
-  final TextEditingController area = TextEditingController();
-  final TextEditingController addressDetails = TextEditingController();
-  final TextEditingController floorNumber = TextEditingController();
-  final TextEditingController flatNumber = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    AddressCubit cubit = AddressCubit.get(context);
+    final messenger = ScaffoldMessenger.of(context);
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -42,10 +40,20 @@ class _AddLocationManuallyBottomSheetState
         child: SafeArea(
           child: BlocConsumer<AddressCubit, AddressState>(
             listener: (context, state) {
-              // TODO: implement listener
+              if(state is PostAddressLoading){
+                showProgressIndicator(context);
+              }
+              if(state is PostAddressSuccess){
+                Navigator.pushNamedAndRemoveUntil(context, ScreenName.mainLayoutScreen, (route) => false);
+                messenger.showSnackBar(customSnackBar(context, text: state.addressResponseEntity.message??"",backgroundColor: AppColors.greenColor,));
+                cubit.getAddressList();
+              }
+              if(state is PostAddressError){
+                messenger.showSnackBar(customSnackBar(context, text: state.error??"",backgroundColor: AppColors.redColor,),);
+                Navigator.pop(context);
+              }
             },
             builder: (context, state) {
-              AddressCubit cubit = AddressCubit.get(context);
               return Form(
                 key: formKey,
                 child: Column(
@@ -81,7 +89,7 @@ class _AddLocationManuallyBottomSheetState
                       title: "Address Label",
                       hintText: "EX : Home",
                       isRequired: true,
-                      controller: label,
+                      controller: cubit.addManuallyLabel,
                     ),
                     const CustomSizedBox(
                       height: 16,
@@ -90,7 +98,7 @@ class _AddLocationManuallyBottomSheetState
                       title: "Area",
                       hintText: "EX : Home",
                       isRequired: true,
-                      controller: area,
+                      controller: cubit.addManuallyArea,
                     ),
                     const CustomSizedBox(
                       height: 16,
@@ -99,7 +107,7 @@ class _AddLocationManuallyBottomSheetState
                       title: "Address Details",
                       hintText: "EX: 25 ST - Wadi Ad-Dawasir",
                       isRequired: true,
-                      controller: addressDetails,
+                      controller: cubit.addManuallyDetails,
                     ),
                     const CustomSizedBox(
                       height: 16,
@@ -107,7 +115,7 @@ class _AddLocationManuallyBottomSheetState
                     FormItemWidget(
                       title: "Floor Number",
                       hintText: "EX: 4 ( optional )",
-                      controller: floorNumber,
+                      controller: cubit.addManuallyFloorNumber,
                     ),
                     const CustomSizedBox(
                       height: 16,
@@ -115,7 +123,7 @@ class _AddLocationManuallyBottomSheetState
                     FormItemWidget(
                       title: "Flat Number",
                       hintText: "EX: 4 ( optional )",
-                      controller: flatNumber,
+                      controller: cubit.addManuallyFlatNumber,
                     ),
                     const CustomSizedBox(
                       height: 16,
@@ -130,15 +138,15 @@ class _AddLocationManuallyBottomSheetState
                           cubit.postAddress(
                             AddressParameters(
                               id: null,
-                              lable: label.text,
-                              area: area.text,
-                              details: addressDetails.text,
-                              floorNumber: floorNumber.text,
-                              flatNumber: flatNumber.text,
+                              lable: cubit.addManuallyLabel.text,
+                              area: cubit.addManuallyArea.text,
+                              details: cubit.addManuallyDetails.text,
+                              floorNumber: cubit.addManuallyFloorNumber.text,
+                              flatNumber: cubit.addManuallyFlatNumber.text,
                               isDefault: cubit.isDefault == null
                                   ? "0"
                                   : cubit.isDefault!,
-                              userId: int.parse(userId.toString()),
+                              userId: 20,
                             ),
                           );
                         }

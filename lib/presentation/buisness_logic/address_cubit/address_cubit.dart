@@ -56,13 +56,24 @@ class AddressCubit extends Cubit<AddressState> {
     emit(PostAddressLoading());
     final response = await _postAddressUseCase(parameters);
     response.fold((l) {
-      print(l);
       emit(PostAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
-      emit(PostAddressSuccess());
+      emit(PostAddressSuccess(addressResponseEntity: r));
+      clearAddressData();
     });
   }
 
+  void clearAddressData(){
+     addManuallyLabel.clear() ;
+     addManuallyDetails.clear() ;
+     addManuallyArea.clear() ;
+     addManuallyFloorNumber.clear() ;
+     addManuallyFlatNumber.clear() ;
+     confirmLocationLabel.clear() ;
+     confirmLocationDetails.clear() ;
+     confirmLocationFloorNumber.clear() ;
+     confirmLocationFlatNumber.clear() ;
+  }
   BitmapDescriptor currentIcon = BitmapDescriptor.defaultMarker;
 
   void getCurrentMarker() {
@@ -144,7 +155,6 @@ class AddressCubit extends Cubit<AddressState> {
     emit(UpdateDefaultAddressLoading());
     final response = await _updateDefaultAddressUseCase(addressId);
     response.fold((l) {
-      print(l);
       emit(UpdateDefaultAddressError(error: l.baseErrorModel.message ?? ""));
     }, (r) {
       getAddressList();
@@ -184,7 +194,7 @@ class AddressCubit extends Cubit<AddressState> {
     markers = {};
     final country =
         await _mapService.getUserAddress(lat: pos.latitude, lng: pos.latitude);
-    final address = await getLocationDescription(pos);
+    final address = await getLocationDescription(pos:pos);
     markers.add(
       Marker(
         markerId: MarkerId(pos.toString()),
@@ -192,20 +202,23 @@ class AddressCubit extends Cubit<AddressState> {
         icon: currentIcon,
         infoWindow: InfoWindow(
           title: country[0].country,
-          snippet: address?.formattedAddress??"",
+          snippet: address?.formattedAddress ?? "",
         ),
       ),
     );
-    ;
     emit(AddMarker());
   }
 
-  Future<LocationDescription?> getLocationDescription(LatLng pos) async{
+  Future<LocationDescription?> getLocationDescription({required LatLng pos}) async {
     emit(GetLocationDescriptionLoading());
-    locationDetails = await _mapService.getLocationDescription(pos.latitude, pos.longitude,);
+    locationDetails = await _mapService.getLocationDescription(
+      pos.latitude,
+      pos.longitude,
+    );
     emit(GetLocationDescriptionSuccess());
     return locationDetails;
   }
+
   final dio = Dio();
   List<PlaceResult> searchResults = [];
 
