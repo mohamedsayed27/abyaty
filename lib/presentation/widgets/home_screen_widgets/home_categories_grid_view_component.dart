@@ -1,15 +1,19 @@
 import 'dart:math';
 
 import 'package:abyaty/core/constants/dummy_data.dart';
+import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_theme/app_colors.dart';
+import '../../buisness_logic/product_cubit/product_state.dart';
 import '../../screens/shop_screen/category_details_screen.dart';
 import '../shared_widgets/category_item_widget.dart';
 
 class CategoriesGridViewComponent extends StatefulWidget {
   final bool shrinkWrap;
+
   const CategoriesGridViewComponent({super.key, this.shrinkWrap = false});
 
   @override
@@ -34,26 +38,44 @@ class _CategoriesGridViewComponentState
   List<Color> chosenColorLIST = [];
 
   @override
+  void initState() {
+    ProductCubit cubit = ProductCubit.get(context);
+    if (cubit.categories!.isEmpty) {
+      cubit.getCategories();
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: widget.shrinkWrap,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1,
-        crossAxisSpacing: 15.5.w,
-        mainAxisSpacing: 16.h,
-      ),
-      itemCount: 9,
-      itemBuilder: (context, index) {
-        return CategoryItemWidget(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_) => CategoryDetailsScreen(title: DummyData.categoriesDummyList[index]["title"],)));
+    ProductCubit cubit = ProductCubit.get(context);
+    return BlocConsumer<ProductCubit, ProductState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: widget.shrinkWrap,
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1,
+            crossAxisSpacing: 15.5.w,
+            mainAxisSpacing: 16.h,
+          ),
+          itemCount: cubit.categories!.length>9?9:cubit.categories!.length,
+          itemBuilder: (context, index) {
+            return CategoryItemWidget(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) =>
+                    CategoryDetailsScreen(
+                      title: cubit.categories![index].name??"",)));
+              },
+              categoryDetailsEntity:cubit.categories![index],
+              color: (itemsColor..shuffle()).first,
+            );
           },
-          title: DummyData.categoriesDummyList[index]["title"],
-          image: DummyData.categoriesDummyList[index]["image"],
-          color: (itemsColor..shuffle()).first,
         );
       },
     );

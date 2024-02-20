@@ -151,11 +151,12 @@ class AddressRemoteDataSource extends AddressBaseRemoteDatasource {
       {required int addressId}) async {
     try {
       final response = await dioHelper.postData(
-        url: "${EndPoints.updateDefaultAddress}/${addressId}",
+        url: "${EndPoints.updateDefaultAddress}/$addressId",
       );
       return BaseResponseModel.fromJson(response.data);
     } catch (e) {
       if (e is DioException) {
+        print(e);
         throw ErrorException(
           baseErrorModel: BaseErrorModel.fromJson(e.response!.data),
         );

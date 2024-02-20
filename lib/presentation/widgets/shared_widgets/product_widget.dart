@@ -3,29 +3,24 @@ import 'package:abyaty/core/app_theme/app_colors.dart';
 import 'package:abyaty/core/app_theme/custom_themes.dart';
 import 'package:abyaty/core/assets_path/svg_path.dart';
 import 'package:abyaty/core/constants/extensions.dart';
+import 'package:abyaty/domain/entities/product_entity/product_details_details_entity.dart';
 import 'package:abyaty/presentation/widgets/bottom_sheets/cart_bottom_sheet/add_to_cart_bottom_sheet.dart';
+import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_widget.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_elevated_button.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../domain/entities/product_entity/product_entity.dart';
 import 'add_to_cart_elevated_button.dart';
 
 class ProductWidget extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String oldPrice;
-  final String newPrice;
-  final bool isFavorite;
+  final ProductEntity productEntity;
   final double? width;
   const ProductWidget({
     super.key,
-    required this.imagePath,
-    required this.title,
-    required this.oldPrice,
-    required this.newPrice,
-    this.isFavorite = false, this.width,
+    required this.productEntity, this.width,
   });
 
   @override
@@ -67,10 +62,7 @@ class ProductWidget extends StatelessWidget {
                     child: CustomSizedBox(
                       height: 80,
                       width: 96,
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.contain,
-                      ),
+                      child: CachedNetworkImageWidget(imageUrl: productEntity.photo!),
                     ),
                   ),
                   PositionedDirectional(
@@ -122,7 +114,7 @@ class ProductWidget extends StatelessWidget {
                       onPressed: () {},
                       foregroundColor: Colors.red,
                       child: SvgPicture.asset(
-                        isFavorite ? SvgPath.filledFavorite : SvgPath.favorite,
+                        true ? SvgPath.filledFavorite : SvgPath.favorite,
                         height: 16.h,
                         width: 16.w,
                       ),
@@ -135,7 +127,7 @@ class ProductWidget extends StatelessWidget {
               height: 8,
             ),
             Text(
-              title,
+              productEntity.name??"",
               textAlign: TextAlign.start,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -152,14 +144,14 @@ class ProductWidget extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
-                  text: "$newPrice SAR  ",
+                  text: "${productEntity.discountPrice}  ",
                   style: CustomThemes.darkColorTextTheme(context).copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
                   ),
                   children: [
-                    TextSpan(
-                      text: "$oldPrice SAR ",
+                    if(productEntity.discountPrice!=productEntity.beforeDiscountPrice)TextSpan(
+                      text: "${productEntity.beforeDiscountPrice}",
                       style: CustomThemes.greyColor80TextTheme(context)
                           .copyWith(
                         decoration: TextDecoration.lineThrough,

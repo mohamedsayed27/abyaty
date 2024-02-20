@@ -1,20 +1,21 @@
 import 'package:abyaty/core/app_theme/custom_themes.dart';
+import 'package:abyaty/data/models/categories/categories_details_model.dart';
+import 'package:abyaty/domain/entities/categories/categories_details_entity.dart';
+import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_widget.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class CategoryItemWidget extends StatelessWidget {
-  final String title;
-  final String image;
-  final Color color;
+ final   CategoryDetailsEntity categoryDetailsEntity;
+ final Color color;
   final void Function()? onTap;
 
   const CategoryItemWidget({
     super.key,
-    required this.title,
-    required this.image,
-    required this.color, this.onTap,
+    required this.categoryDetailsEntity,
+     this.onTap, required this.color,
   });
 
   @override
@@ -41,12 +42,10 @@ class CategoryItemWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Ink.image(
-                image: AssetImage(
-                  image,
-                ),
-                width: 56.w,
-                height: 56.h,
+              CustomSizedBox(
+                width: 56,
+                height: 56,
+                child: CachedNetworkImageWidget(imageUrl: categoryDetailsEntity.photo!),
               ),
               CustomSizedBox(
                 height: 8.h,
@@ -54,8 +53,10 @@ class CategoryItemWidget extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    title,
+                    categoryDetailsEntity.name??"",
                     textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: CustomThemes.greyColor1ATextTheme(context).copyWith(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w600,

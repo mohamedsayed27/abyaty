@@ -7,23 +7,21 @@ import 'api_end_points.dart';
 class DioHelper {
   static late Dio dio;
 
-   static init() {
+  static init() {
     dio = Dio(
       BaseOptions(
         baseUrl: EndPoints.baseUrl,
         receiveDataWhenStatusError: true,
-
       ),
     );
   }
 
-   Future<Response> getData({
+  Future<Response> getData({
     required String url,
     Map<String, dynamic>? query,
     String lang = 'ar',
   }) async {
-
-     token = await CacheHelper.getData(key: CacheKeys.token);
+    token = await CacheHelper.getData(key: CacheKeys.token);
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
@@ -31,23 +29,25 @@ class DioHelper {
       if (token != null) "Authorization": "Bearer $token",
       'Accept': 'text/plain',
     };
-    return await dio.get(url, queryParameters: query,);
+    return await dio.get(
+      url,
+      queryParameters: query,
+    );
   }
 
-   Future<Response> postData({
-    required String url,
-    dynamic query,
-    dynamic data,
-    String lang = 'ar'
-  }) async {
-     token = await CacheHelper.getData(key: CacheKeys.token);
-     print(token);
+  Future<Response> postData(
+      {required String url,
+      dynamic query,
+      dynamic data,
+      String lang = 'ar'}) async {
+    token = await CacheHelper.getData(key: CacheKeys.token);
+    print(token);
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
-      "Connection":"keep-alive",
+      "Connection": "keep-alive",
       'User-Agent': 'Chrome/96.0.4664.110',
-      if (token != null)"Authorization": "Bearer $token",
+      if (token != null) "Authorization": "Bearer $token",
       'Accept': '*/*',
     };
     return await dio.post(url, queryParameters: query, data: data);
@@ -55,13 +55,13 @@ class DioHelper {
     // return ;
   }
 
-   Future<Response> deleteData({
+  Future<Response> deleteData({
     required String url,
     dynamic query,
     dynamic data,
     String lang = 'ar',
   }) async {
-     token = await CacheHelper.getData(key: CacheKeys.token);
+    token = await CacheHelper.getData(key: CacheKeys.token);
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,
@@ -72,14 +72,13 @@ class DioHelper {
     return await dio.delete(url, queryParameters: query, data: data);
   }
 
-   Future<Response> putData({
+  Future<Response> putData({
     required String url,
     dynamic query,
     dynamic data,
     String lang = 'ar',
-
   }) async {
-     token = await CacheHelper.getData(key: CacheKeys.token);
+    token = await CacheHelper.getData(key: CacheKeys.token);
     dio.options.headers = {
       'Content-Type': 'application/json',
       'x-localization': lang,

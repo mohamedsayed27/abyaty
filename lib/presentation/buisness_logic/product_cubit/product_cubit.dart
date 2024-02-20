@@ -249,10 +249,12 @@ class ProductCubit extends Cubit<ProductState> {
     emit(GetCategoriesLoading());
     final response = await _getCategoriesListUseCase(const NoParameters());
     response.fold((l) {
+      print(l);
       emit(GetCategoriesError(
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
+      print(r.categoryDetailsEntity,);
         categories = r.categoryDetailsEntity;
       emit(GetCategoriesSuccess());
     });
