@@ -37,7 +37,7 @@ class CategoryItemWidget extends StatelessWidget {
               BoxShadow(
                   offset: Offset(0, 8.h),
                   color: Colors.black.withOpacity(0.08),
-                  blurRadius: 32.r)
+                  blurRadius: 32.r,),
             ],
           ),
           child: Column(
@@ -55,7 +55,7 @@ class CategoryItemWidget extends StatelessWidget {
                   child: Text(
                     categoryDetailsEntity.name??"",
                     textAlign: TextAlign.center,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: CustomThemes.greyColor1ATextTheme(context).copyWith(
                       fontSize: 13.sp,

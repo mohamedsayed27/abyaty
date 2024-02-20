@@ -126,19 +126,21 @@ class ProductWidget extends StatelessWidget {
             const CustomSizedBox(
               height: 8,
             ),
-            Text(
-              productEntity.name??"",
-              textAlign: TextAlign.start,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: CustomThemes.greyColor80TextTheme(context).copyWith(
-                fontSize: 14.sp,
-                height: 1.2.h,
-                fontWeight: FontWeight.w400,
-              ),
-            ).onlyDirectionalPadding(end: 10),
+            Expanded(
+              child: Text(
+                productEntity.name??"",
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: CustomThemes.greyColor80TextTheme(context).copyWith(
+                  fontSize: 14.sp,
+                  height: 1.2.h,
+                  fontWeight: FontWeight.w400,
+                ),
+              ).onlyDirectionalPadding(end: 10),
+            ),
             const CustomSizedBox(
-              height: 12,
+              height: 8,
             ),
             RichText(
               maxLines: 2,
@@ -163,7 +165,7 @@ class ProductWidget extends StatelessWidget {
                   ]),
             ),
             const CustomSizedBox(
-              height: 12,
+              height: 16,
             ),
             Align(
               alignment: Alignment.center,

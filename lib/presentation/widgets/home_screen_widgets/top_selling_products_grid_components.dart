@@ -7,9 +7,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
 import '../../buisness_logic/product_cubit/product_state.dart';
 
-class TopSellingProductsGridComponent extends StatelessWidget {
+class TopSellingProductsGridComponent extends StatefulWidget {
   const TopSellingProductsGridComponent({super.key});
 
+  @override
+  State<TopSellingProductsGridComponent> createState() => _TopSellingProductsGridComponentState();
+}
+
+class _TopSellingProductsGridComponentState extends State<TopSellingProductsGridComponent> {
+  @override
+  void initState() {
+    ProductCubit cubit = ProductCubit.get(context);
+    if(cubit.topSellingProducts!.isEmpty){
+      cubit.getTopSelling();
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // print(MediaQuery.of(context).size.width);

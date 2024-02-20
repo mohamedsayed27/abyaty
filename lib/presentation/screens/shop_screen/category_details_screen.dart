@@ -18,8 +18,8 @@ import '../home_screen/search_screen.dart';
 
 class CategoryDetailsScreen extends StatelessWidget {
   final String title;
-
-  const CategoryDetailsScreen({super.key, required this.title});
+  final int id;
+  const CategoryDetailsScreen({super.key, required this.title, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class CategoryDetailsScreen extends StatelessWidget {
             ],
           ).symmetricPadding(horizontal: 16),
           Expanded(
-            child: CategoryProductsGridComponent(),
+            child: CategoryProductsGridComponent(id: id,),
           ),
         ],
       ),

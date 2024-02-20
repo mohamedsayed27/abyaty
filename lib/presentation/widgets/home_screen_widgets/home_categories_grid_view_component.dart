@@ -36,10 +36,11 @@ class _CategoriesGridViewComponentState
   ];
 
   List<Color> chosenColorLIST = [];
+  late ProductCubit cubit;
 
   @override
   void initState() {
-    ProductCubit cubit = ProductCubit.get(context);
+    cubit = ProductCubit.get(context);
     if (cubit.categories!.isEmpty) {
       cubit.getCategories();
     }
@@ -48,7 +49,6 @@ class _CategoriesGridViewComponentState
 
   @override
   Widget build(BuildContext context) {
-    ProductCubit cubit = ProductCubit.get(context);
     return BlocConsumer<ProductCubit, ProductState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -60,19 +60,28 @@ class _CategoriesGridViewComponentState
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 1,
+            childAspectRatio:0.87,
             crossAxisSpacing: 15.5.w,
             mainAxisSpacing: 16.h,
           ),
-          itemCount: cubit.categories!.length>9?9:cubit.categories!.length,
+          itemCount:
+              cubit.categories!.length > 9 ? 9 : cubit.categories!.length,
           itemBuilder: (context, index) {
             return CategoryItemWidget(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) =>
-                    CategoryDetailsScreen(
-                      title: cubit.categories![index].name??"",)));
+
+                cubit.productByCategoryPageNumber =1;
+                cubit.productsByCategory =[];
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CategoryDetailsScreen(
+                      title: cubit.categories![index].name ?? "", id: cubit.categories![index].id!,
+                    ),
+                  ),
+                );
               },
-              categoryDetailsEntity:cubit.categories![index],
+              categoryDetailsEntity: cubit.categories![index],
               color: (itemsColor..shuffle()).first,
             );
           },

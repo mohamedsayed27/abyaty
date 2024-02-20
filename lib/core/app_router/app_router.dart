@@ -51,8 +51,8 @@ class AppRouter {
           return MaterialPageRoute(builder: (_) => const ProfileScreen());
         case ScreenName.saveCardsScreen:
           return MaterialPageRoute(builder: (_) => const SaveCardsScreen());
-        case ScreenName.categoriesScreen:
-          return MaterialPageRoute(builder: (_) => const CategoryDetailsScreen(title: "Sports"));
+        // case ScreenName.categoriesScreen:
+        //   return MaterialPageRoute(builder: (_) => const CategoryDetailsScreen(title: "Sports"));
         case ScreenName.shopScreen:
           return MaterialPageRoute(builder: (_) => const ShopScreen());
 

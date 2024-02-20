@@ -50,7 +50,7 @@ class _ShopCategoriesGridViewComponentState
         // padding: EdgeInsets.symmetric(horizontal: 16.w),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 1,
+          childAspectRatio: 0.87,
           crossAxisSpacing: 15.5.w,
           mainAxisSpacing: 16.h,
         ),
@@ -60,7 +60,7 @@ class _ShopCategoriesGridViewComponentState
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) =>
                   CategoryDetailsScreen(
-                    title: DummyData.categoriesDummyList[index]["title"],)));
+                    title: DummyData.categoriesDummyList[index]["title"], id: cubit.categories![index].id!,)));
             },
             categoryDetailsEntity:cubit.categories![index],
             color: (itemsColor..shuffle()).first,

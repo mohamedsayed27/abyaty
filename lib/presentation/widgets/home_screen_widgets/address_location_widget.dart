@@ -19,9 +19,10 @@ class AddressLocationWidget extends StatefulWidget {
 }
 
 class _AddressLocationWidgetState extends State<AddressLocationWidget> {
+  late AddressCubit cubit;
   @override
   void initState() {
-    AddressCubit cubit =AddressCubit.get(context);
+    cubit =AddressCubit.get(context);
     if(cubit.addressList.isEmpty){
       AddressCubit.get(context).getAddressList();
     }
@@ -34,7 +35,6 @@ class _AddressLocationWidgetState extends State<AddressLocationWidget> {
         // TODO: implement listener
       },
       builder: (context, state) {
-        AddressCubit cubit = AddressCubit.get(context);
         return ListTile(
           onTap: () {
             showModalBottomSheet(
