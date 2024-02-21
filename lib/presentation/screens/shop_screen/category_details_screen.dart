@@ -3,13 +3,17 @@ import 'package:abyaty/presentation/widgets/bottom_sheets/popularity_bottom_shee
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_theme/app_colors.dart';
 import '../../../core/app_theme/custom_themes.dart';
 import '../../../translations/locale_keys.g.dart';
+import '../../buisness_logic/product_cubit/product_cubit.dart';
+import '../../buisness_logic/product_cubit/product_state.dart';
 import '../../widgets/bottom_sheets/filter_botttom_sheet/filter_bottom_sheet.dart';
 import '../../widgets/shared_widgets/custom_text_button.dart';
+import '../../widgets/shared_widgets/products_shimmer_grid.dart';
 import '../../widgets/shared_widgets/search_filter_text_field.dart';
 import '../../widgets/shop_screen_widgets/categories_tab_bar_widget.dart';
 import '../../widgets/shop_screen_widgets/category_product_grid_component.dart';
@@ -19,7 +23,12 @@ import '../home_screen/search_screen.dart';
 class CategoryDetailsScreen extends StatelessWidget {
   final String title;
   final int id;
-  const CategoryDetailsScreen({super.key, required this.title, required this.id});
+
+  const CategoryDetailsScreen({
+    super.key,
+    required this.title,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +114,6 @@ class CategoryDetailsScreen extends StatelessWidget {
               ),
               CustomTextButton(
                 onPressed: () {
-
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.white,
@@ -144,8 +152,26 @@ class CategoryDetailsScreen extends StatelessWidget {
               ),
             ],
           ).symmetricPadding(horizontal: 16),
-          Expanded(
-            child: CategoryProductsGridComponent(id: id,),
+          BlocBuilder<ProductCubit, ProductState>(
+            builder: (context, state) {
+              return Expanded(
+                child: state is GetAllProductLoading
+                    ? const CategoryProductsShimmerGridComponent()
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: CategoryProductsGridComponent(
+                              id: id,
+                            ),
+                          ),
+                          Visibility(
+                            visible: state is GetPaginatedProductLoading,
+                            child: Center(child: CircularProgressIndicator.adaptive()),
+                          )
+                        ],
+                      ),
+              );
+            },
           ),
         ],
       ),

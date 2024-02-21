@@ -137,7 +137,11 @@ class ProductCubit extends Cubit<ProductState> {
     required int categoryId,
     int? subCategoryId,
   }) async {
-    emit(GetAllProductLoading());
+    if(productByCategoryPageNumber==1){
+      emit(GetAllProductLoading());
+    }else{
+      emit(GetPaginatedProductLoading());
+    }
     final response = await _getAllProductUseCase(
       ProductParameters(
         categoryId: categoryId,
@@ -271,6 +275,7 @@ class ProductCubit extends Cubit<ProductState> {
       ));
     }, (r) {
         subCategories = r.subCategoryDetailsEntity;
+        subCategories?.insert(0, const SubCategoryDetailsEntity(name: "All" ));
       emit(GetSubCategoriesSuccess());
     });
   }

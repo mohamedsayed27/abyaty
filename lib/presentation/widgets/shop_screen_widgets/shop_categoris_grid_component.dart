@@ -14,6 +14,7 @@ import '../shared_widgets/category_item_widget.dart';
 
 class ShopCategoriesGridViewComponent extends StatefulWidget {
   final bool shrinkWrap;
+
   const ShopCategoriesGridViewComponent({super.key, this.shrinkWrap = false});
 
   @override
@@ -23,6 +24,7 @@ class ShopCategoriesGridViewComponent extends StatefulWidget {
 
 class _ShopCategoriesGridViewComponentState
     extends State<ShopCategoriesGridViewComponent> {
+  late ProductCubit cubit;
   List<Color> itemsColor = [
     AppColors.firstDummyColor,
     AppColors.secondDummyColor,
@@ -35,39 +37,52 @@ class _ShopCategoriesGridViewComponentState
     AppColors.ninthDummyColor,
   ];
 
+  @override
+  initState(){
+    cubit = ProductCubit.get(context);
+    super.initState();
+
+  }
+
   List<Color> chosenColorLIST = [];
 
   @override
-  Widget build(BuildContext context) {ProductCubit cubit = ProductCubit.get(context);
-  return BlocConsumer<ProductCubit, ProductState>(
-    listener: (context, state) {
-      // TODO: implement listener
-    },
-    builder: (context, state) {
-      return GridView.builder(
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: widget.shrinkWrap,
-        // padding: EdgeInsets.symmetric(horizontal: 16.w),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 0.87,
-          crossAxisSpacing: 15.5.w,
-          mainAxisSpacing: 16.h,
-        ),
-        itemCount: cubit.categories!.length,
-        itemBuilder: (context, index) {
-          return CategoryItemWidget(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) =>
-                  CategoryDetailsScreen(
-                    title: DummyData.categoriesDummyList[index]["title"], id: cubit.categories![index].id!,)));
-            },
-            categoryDetailsEntity:cubit.categories![index],
-            color: (itemsColor..shuffle()).first,
-          );
-        },
-      );
-    },
-  );
+  Widget build(BuildContext context) {
+    return BlocConsumer<ProductCubit, ProductState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return GridView.builder(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: widget.shrinkWrap,
+          // padding: EdgeInsets.symmetric(horizontal: 16.w),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 0.87,
+            crossAxisSpacing: 15.5.w,
+            mainAxisSpacing: 16.h,
+          ),
+          itemCount: cubit.categories!.length,
+          itemBuilder: (context, index) {
+            return CategoryItemWidget(
+              onTap: () {
+                cubit.productByCategoryPageNumber = 1;
+                cubit.productsByCategory = [];
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CategoryDetailsScreen(
+                              title: cubit.categories![index].name ?? "",
+                              id: cubit.categories![index].id!,
+                            )));
+              },
+              categoryDetailsEntity: cubit.categories![index],
+              color: (itemsColor..shuffle()).first,
+            );
+          },
+        );
+      },
+    );
   }
 }

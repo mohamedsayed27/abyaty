@@ -8,7 +8,8 @@ import '../shared_widgets/product_widget.dart';
 
 class CategoryProductsGridComponent extends StatefulWidget {
   final int id;
-  const CategoryProductsGridComponent({super.key, required this.id});
+  final ScrollPhysics? physics;
+  const CategoryProductsGridComponent({super.key, required this.id, this.physics});
 
   @override
   State<CategoryProductsGridComponent> createState() => _CategoryProductsGridComponentState();
@@ -34,12 +35,11 @@ class _CategoryProductsGridComponentState extends State<CategoryProductsGridComp
     double width = MediaQuery.of(context).size.width;
     return BlocConsumer<ProductCubit, ProductState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         return GridView.builder(
           controller: scrollController,
-          physics: const BouncingScrollPhysics(),
+          physics: widget.physics??const BouncingScrollPhysics(),
           shrinkWrap: true,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

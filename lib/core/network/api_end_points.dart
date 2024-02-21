@@ -20,4 +20,5 @@ static const addToFavorite ='$items$wishlist/store';
 static const removeFromFavorite ='$items$wishlist/delete';
 static const getFavoritesList ='$items$wishlist/list';
 static const subCategories ='/subcategories';
+static const sliders ='/sliders';
 }

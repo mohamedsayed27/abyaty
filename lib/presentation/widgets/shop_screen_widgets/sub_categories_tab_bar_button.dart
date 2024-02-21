@@ -8,14 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SubCategoriesTabBarButton extends StatelessWidget {
   final bool isSelected;
   final void Function()? onPressed;
-  final String imagePath;
   final String title;
 
   const SubCategoriesTabBarButton({
     super.key,
     required this.isSelected,
     this.onPressed,
-    required this.imagePath,
     required this.title,
   });
 
@@ -30,32 +28,19 @@ class SubCategoriesTabBarButton extends StatelessWidget {
           : AppColors.whiteColor,
       onPressed: onPressed,
       height: 32,
-      padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       foregroundColor: AppColors.secondaryColor,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            imagePath,
-            height: 24.h,
-            width: 24.w,
-          ),
-          const CustomSizedBox(
-            width: 4,
-          ),
-          Text(
-            title,
-            style: isSelected
-                ? CustomThemes.secondaryColorTextTheme(context).copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  )
-                : CustomThemes.greyColor99TextTheme(context).copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-          )
-        ],
+      child: Text(
+        title,
+        style: isSelected
+            ? CustomThemes.secondaryColorTextTheme(context).copyWith(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+        )
+            : CustomThemes.greyColor99TextTheme(context).copyWith(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }

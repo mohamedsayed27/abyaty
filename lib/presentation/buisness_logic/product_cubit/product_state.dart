@@ -38,6 +38,7 @@ class GetProductsAttributeError extends ProductState {
 
 
 class GetAllProductLoading extends ProductState {}
+class GetPaginatedProductLoading extends ProductState {}
 
 class GetAllProductSuccess extends ProductState {}
 
