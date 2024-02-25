@@ -5,16 +5,18 @@ import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../domain/entities/categories/sub_category_details_entity.dart';
+
 class SubCategoriesTabBarButton extends StatelessWidget {
   final bool isSelected;
   final void Function()? onPressed;
-  final String title;
+  final SubCategoryDetailsEntity subCategoryDetailsEntity;
 
   const SubCategoriesTabBarButton({
     super.key,
     required this.isSelected,
     this.onPressed,
-    required this.title,
+    required this.subCategoryDetailsEntity,
   });
 
   @override
@@ -31,7 +33,7 @@ class SubCategoriesTabBarButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       foregroundColor: AppColors.secondaryColor,
       child: Text(
-        title,
+        subCategoryDetailsEntity.name??"",
         style: isSelected
             ? CustomThemes.secondaryColorTextTheme(context).copyWith(
           fontSize: 14.sp,

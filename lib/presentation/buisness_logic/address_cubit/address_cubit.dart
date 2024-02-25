@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:abyaty/core/base_use_case/base_use_case.dart';
 import 'package:abyaty/core/parameters/address_parameters.dart';
 import 'package:dio/dio.dart';
@@ -49,7 +51,8 @@ class AddressCubit extends Cubit<AddressState> {
   final TextEditingController confirmLocationFlatNumber =
       TextEditingController();
 
-  late GoogleMapController mapController;
+  final Completer<GoogleMapController> mapController =
+  Completer<GoogleMapController>();
   String? isDefault;
 
   void postAddress(AddressParameters parameters) async {
@@ -238,7 +241,8 @@ class AddressCubit extends Cubit<AddressState> {
     required double lng,
   }) async {
     markers.clear();
-    mapController.animateCamera(
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(

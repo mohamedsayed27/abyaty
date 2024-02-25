@@ -198,7 +198,7 @@ class _ChooseAddressLocationScreenState
                               markers: cubit.markers,
                               myLocationButtonEnabled: false,
                               onMapCreated: (GoogleMapController controller) {
-                                cubit.mapController = controller;
+                                cubit.mapController.complete(controller);
                               },
                               onTap: cubit.addMarker,
                               initialCameraPosition: CameraPosition(

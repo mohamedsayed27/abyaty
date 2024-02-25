@@ -1,7 +1,5 @@
 import 'package:abyaty/core/cache_helper/shared_pref_methods.dart';
-import 'package:abyaty/data/datasource/remote_datasource/products_remote_data_source.dart';
 import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
-import 'package:abyaty/presentation/screens/auth_screens/login_screen.dart';
 import 'package:abyaty/try_screen.dart';
 
 import 'bloc_observer.dart';
@@ -28,8 +26,6 @@ void main() async{
   await DioHelper.init();
   await CacheHelper.init();
   ServicesLocator().init();
-  // CacheHelper.clear();
-  ProductRemoteDataSource(dioHelper: sl()).getTopSellingProducts();
   Bloc.observer = MyBlocObserver();
   runApp(
     EasyLocalization(
@@ -65,7 +61,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (_) => MainLayoutCubit()),
             BlocProvider(create: (_) => ProductCubit()),
             BlocProvider(create: (_) => AuthCubit()),
-            BlocProvider(create: (_) => AddressCubit()..getCurrentMarker()),
+            BlocProvider(create: (_) => AddressCubit()..getAddressList()),
           ],
           child: MaterialApp(
             title: 'Abyati',
@@ -75,7 +71,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             onGenerateRoute: AppRouter.generateRoute,
             initialRoute: ScreenName.splashScreen,
-            // home: LoginScreen(),
+            // home: SavedAddressScreen(),
           ),
         );
       },

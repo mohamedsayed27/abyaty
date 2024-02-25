@@ -44,6 +44,7 @@ class ProductCubit extends Cubit<ProductState> {
   final GetCategoriesListUseCase _getCategoriesListUseCase = sl();
   final GetSubCategoriesListUseCase _getSubCategoriesListUseCase = sl();
 
+  int selectedIndex = 0;
   List<ProductEntity> allProducts = [];
 
   void addProductToCart({

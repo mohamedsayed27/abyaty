@@ -37,12 +37,12 @@ class _CategoriesTabBarWidgetState extends State<CategoriesTabBarWidget> {
               },
               builder: (context, state) {
                 return SubCategoriesTabBarButton(
-                  isSelected: selectedIndex == index,
-                  title: itemsList[index]["title"],
+                  isSelected: cubit.selectedIndex == index,
+                  subCategoryDetailsEntity: cubit.subCategories![index],
                   onPressed: () {
-                    if (index != selectedIndex) {
+                    if (index != cubit.selectedIndex) {
                       setState(() {
-                        selectedIndex = index;
+                        cubit.selectedIndex = index;
                       });
                     }
                   },
@@ -53,7 +53,7 @@ class _CategoriesTabBarWidgetState extends State<CategoriesTabBarWidget> {
         const CustomSizedBox(
           width: 8,
         ),
-        itemCount: itemsList.length,
+        itemCount: cubit.subCategories!.length,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(
           horizontal: 16.w,

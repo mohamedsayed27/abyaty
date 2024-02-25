@@ -98,7 +98,9 @@ class CategoryDetailsScreen extends StatelessWidget {
           const CustomSizedBox(
             height: 16,
           ),
-          const CategoriesTabBarWidget(),
+          CategoriesTabBarWidget(
+            categoryId: id,
+          ),
           const CustomSizedBox(
             height: 8,
           ),
@@ -166,7 +168,8 @@ class CategoryDetailsScreen extends StatelessWidget {
                           ),
                           Visibility(
                             visible: state is GetPaginatedProductLoading,
-                            child: Center(child: CircularProgressIndicator.adaptive()),
+                            child: Center(
+                                child: CircularProgressIndicator.adaptive()),
                           )
                         ],
                       ),
