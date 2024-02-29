@@ -76,7 +76,7 @@ class GoogleMapsServices {
   final _dio = Dio();
 
   Future<List<PlaceResult>> searchPlaces(String query) async {
-    const apiKey = 'AIzaSyDnQkxNT4gLawqHzZNM0q2JSbOGXu3mZpw';
+    const apiKey = 'AIzaSyC2A8x1veFcxA54gX82njTzWZ_aAarTU1E';
     final url =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?query=$query&key=$apiKey';
 
@@ -94,7 +94,7 @@ class GoogleMapsServices {
     return searchResults;
   }
   Future<LocationDescription> getLocationDescription(double latitude, double longitude) async {
-    const apiKey = 'AIzaSyDnQkxNT4gLawqHzZNM0q2JSbOGXu3mZpw';
+    const apiKey = 'AIzaSyC2A8x1veFcxA54gX82njTzWZ_aAarTU1E';
     final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&language=ar&key=$apiKey';
 
     final response = await _dio.get(
@@ -113,6 +113,7 @@ class LocationDescription {
   LocationDescription({this.formattedAddress});
 
   factory LocationDescription.fromJson(Map<String, dynamic> json) {
+    print(json);
     return LocationDescription(
       formattedAddress: json['results'][0]['formatted_address'],
     );

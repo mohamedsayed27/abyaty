@@ -7,7 +7,7 @@ class AddressDetailsEntity extends Equatable {
   final String? details;
   final String? floorNumber;
   final String? flatNumber;
-  final String? isDefault;
+  final int? isDefault;
   final int? userId;
 
   const AddressDetailsEntity({

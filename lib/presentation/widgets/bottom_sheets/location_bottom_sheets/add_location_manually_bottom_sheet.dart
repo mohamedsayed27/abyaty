@@ -144,7 +144,7 @@ class _AddLocationManuallyBottomSheetState
                               floorNumber: cubit.addManuallyFloorNumber.text,
                               flatNumber: cubit.addManuallyFlatNumber.text,
                               isDefault: cubit.isDefault == null
-                                  ? "0"
+                                  ? 0
                                   : cubit.isDefault!,
                               userId: 20,
                             ),

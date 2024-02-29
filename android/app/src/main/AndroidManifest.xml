@@ -8,6 +8,8 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="abyaty">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDcWIxw6lRSHR9O8ts9R76d9Z7ZzsFmDa0"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -21,9 +23,6 @@
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
-            <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyDnQkxNT4gLawqHzZNM0q2JSbOGXu3mZpw" />
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />

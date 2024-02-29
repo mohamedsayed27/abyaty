@@ -144,7 +144,7 @@ class _HomeLocationBottomSheetState extends State<HomeLocationBottomSheet> {
                       },
                       description: cubit.addressList[index].area ?? "",
                       isChecked:
-                          cubit.addressMap[cubit.addressList[index].id] == "1",
+                          cubit.addressMap[cubit.addressList[index].id] == 1,
                     ),
                   ),
                    CustomSizedBox(

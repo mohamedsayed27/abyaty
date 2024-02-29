@@ -32,14 +32,13 @@ class _SaveAddressAsADefaultState extends State<SaveAddressAsADefault> {
             ),
             onChanged: (newValue) {
 
-
               setState(() {
                 isChecked = newValue!;
               });
               if(isChecked==true){
-                AddressCubit.get(context).isDefault = "1";
+                AddressCubit.get(context).isDefault = 1;
               }else{
-                AddressCubit.get(context).isDefault = "0";
+                AddressCubit.get(context).isDefault = 0;
               }
               print(AddressCubit.get(context).isDefault);
             },

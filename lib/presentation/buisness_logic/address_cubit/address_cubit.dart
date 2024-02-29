@@ -53,7 +53,7 @@ class AddressCubit extends Cubit<AddressState> {
 
   final Completer<GoogleMapController> mapController =
   Completer<GoogleMapController>();
-  String? isDefault;
+  int? isDefault;
 
   void postAddress(AddressParameters parameters) async {
     emit(PostAddressLoading());
@@ -89,7 +89,7 @@ class AddressCubit extends Cubit<AddressState> {
   }
 
   List<AddressDetailsEntity> addressList = [];
-  Map<int, String> addressMap = {};
+  Map<int, int> addressMap = {};
   AddressDetailsEntity? defaultAddress;
 
   void updateAddress(AddressParameters parameters) async {
@@ -133,7 +133,7 @@ class AddressCubit extends Cubit<AddressState> {
         addressList = r.addressList!;
         for (var element in addressList) {
           addressMap.addAll({element.id!: element.isDefault!});
-          if (element.isDefault == "1") {
+          if (element.isDefault == 1) {
             defaultAddress = element;
           }
         }
@@ -146,9 +146,9 @@ class AddressCubit extends Cubit<AddressState> {
 
   void updateDefaultAddressLocally(
       AddressDetailsEntity? addressDetailsEntity) async {
-    addressMap.updateAll((key, value) => value = '0');
+    addressMap.updateAll((key, value) => value = 0);
     if (addressDetailsEntity != null) {
-      addressMap.update(addressDetailsEntity.id!, (value) => '1');
+      addressMap.update(addressDetailsEntity.id!, (value) => 1);
     }
     changeAddress = addressDetailsEntity;
     emit(UpdateDefaultAddressLocally());
