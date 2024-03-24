@@ -69,7 +69,6 @@ class _CategoriesGridViewComponentState
           itemBuilder: (context, index) {
             return CategoryItemWidget(
               onTap: () {
-
                 cubit.productByCategoryPageNumber =1;
                 cubit.productsByCategory =[];
                 Navigator.push(

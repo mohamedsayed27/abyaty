@@ -28,7 +28,7 @@ import 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
 
-  static ProductCubit get(context) => BlocProvider.of(context);
+  static ProductCubit get(context) => BlocProvider.of<ProductCubit>(context);
 
   final AddProductToCartUseCase _addProductToCartUseCase = sl();
   final AddProductToFavoriteUseCase _addProductToFavoriteUseCase = sl();
@@ -133,12 +133,13 @@ class ProductCubit extends Cubit<ProductState> {
 
   List<ProductEntity> productsByCategory = [];
   int productByCategoryPageNumber = 1;
-
+  bool getProductsByCategoryIdLoading = false;
   void getAllProductByCategoryId({
     required int categoryId,
     int? subCategoryId,
   }) async {
     if(productByCategoryPageNumber==1){
+      getProductsByCategoryIdLoading = true;
       emit(GetAllProductLoading());
     }else{
       emit(GetPaginatedProductLoading());
@@ -151,7 +152,7 @@ class ProductCubit extends Cubit<ProductState> {
       ),
     );
     response.fold((l) {
-
+      getProductsByCategoryIdLoading = false;
       emit(GetAllProductError(
         error: l.baseErrorModel.message??"",
       ));
@@ -169,6 +170,7 @@ class ProductCubit extends Cubit<ProductState> {
         }
       }
 
+      getProductsByCategoryIdLoading = false;
       emit(GetAllProductSuccess());
     });
   }

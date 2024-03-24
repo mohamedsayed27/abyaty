@@ -16,27 +16,24 @@ class CategoryProductsGridComponent extends StatefulWidget {
 }
 
 class _CategoryProductsGridComponentState extends State<CategoryProductsGridComponent> {
-  late ProductCubit cubit;
   @override
   void initState() {
-    cubit = ProductCubit.get(context);
-      cubit.getAllProductByCategoryId(categoryId: widget.id,);
+    super.initState();
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
-        cubit.getAllProductByCategoryId(categoryId: widget.id,);
+          scrollController.offset && scrollController.position.atEdge) {
+        ProductCubit.get(context).getAllProductByCategoryId(categoryId: widget.id,);
       }
     });
-    super.initState();
   }
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return BlocConsumer<ProductCubit, ProductState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
+        var cubit= ProductCubit.get(context);
         return GridView.builder(
           controller: scrollController,
           physics: widget.physics??const BouncingScrollPhysics(),
@@ -57,5 +54,11 @@ class _CategoryProductsGridComponentState extends State<CategoryProductsGridComp
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 }

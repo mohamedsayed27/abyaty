@@ -32,34 +32,93 @@ class CategoryDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, 63.h),
-        child: ShopAppBar(
-          isInternalScreen: true,
-          title: title,
+    return BlocProvider.value(
+      value: ProductCubit.get(context)
+        ..getAllProductByCategoryId(categoryId: id),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(double.infinity, 63.h),
+          child: ShopAppBar(
+            isInternalScreen: true,
+            title: title,
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadowColor(),
-                  offset: Offset(0, 8.h),
-                  blurRadius: 32.r,
-                )
-              ],
+        body: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadowColor(),
+                    offset: Offset(0, 8.h),
+                    blurRadius: 32.r,
+                  )
+                ],
+              ),
+              child: Hero(
+                tag: "searchFilter",
+                child: Material(
+                  color: Colors.transparent,
+                  child: SearchFilterTextField(
+                    readOnly: true,
+                    enabled: true,
+                    onFilterTapped: () {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.white,
+                        useSafeArea: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24.r),
+                            topRight: Radius.circular(24.r),
+                          ),
+                        ),
+                        showDragHandle: true,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return const FilterBottomSheet();
+                        },
+                      );
+                    },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SearchScreen(),
+                        ),
+                      );
+                    },
+                    hintText: LocaleKeys.whatAreYouLookingFor.tr(),
+                    searchIconColor: AppColors.authHintTextColor,
+                  ),
+                ),
+              ),
+            ).onlyDirectionalPadding(
+              start: 16,
+              end: 16,
+              top: 16,
             ),
-            child: Hero(
-              tag: "searchFilter",
-              child: Material(
-                color: Colors.transparent,
-                child: SearchFilterTextField(
-                  readOnly: true,
-                  enabled: true,
-                  onFilterTapped: () {
+            const CustomSizedBox(
+              height: 16,
+            ),
+            CategoriesTabBarWidget(
+              categoryId: id,
+            ),
+            const CustomSizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  LocaleKeys.topSellingProducts.tr(),
+                  style: CustomThemes.greyColor1ATextTheme(context).copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                CustomTextButton(
+                  onPressed: () {
                     showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
@@ -73,110 +132,55 @@ class CategoryDetailsScreen extends StatelessWidget {
                       showDragHandle: true,
                       isScrollControlled: true,
                       builder: (context) {
-                        return const FilterBottomSheet();
+                        return const PopularityBottomSheet();
                       },
                     );
                   },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const SearchScreen(),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        LocaleKeys.mostPopular.tr(),
+                        style: CustomThemes.primaryColorTextTheme(context)
+                            .copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                        ),
                       ),
-                    );
-                  },
-                  hintText: LocaleKeys.whatAreYouLookingFor.tr(),
-                  searchIconColor: AppColors.authHintTextColor,
-                ),
-              ),
-            ),
-          ).onlyDirectionalPadding(
-            start: 16,
-            end: 16,
-            top: 16,
-          ),
-          const CustomSizedBox(
-            height: 16,
-          ),
-          CategoriesTabBarWidget(
-            categoryId: id,
-          ),
-          const CustomSizedBox(
-            height: 8,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                LocaleKeys.topSellingProducts.tr(),
-                style: CustomThemes.greyColor1ATextTheme(context).copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              CustomTextButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.white,
-                    useSafeArea: true,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.r),
-                        topRight: Radius.circular(24.r),
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 20.r,
+                        color: AppColors.primaryColor,
                       ),
-                    ),
-                    showDragHandle: true,
-                    isScrollControlled: true,
-                    builder: (context) {
-                      return const PopularityBottomSheet();
-                    },
-                  );
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      LocaleKeys.mostPopular.tr(),
-                      style:
-                          CustomThemes.primaryColorTextTheme(context).copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 20.r,
-                      color: AppColors.primaryColor,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ).symmetricPadding(horizontal: 16),
-          BlocBuilder<ProductCubit, ProductState>(
-            builder: (context, state) {
-              return Expanded(
-                child: state is GetAllProductLoading
-                    ? const CategoryProductsShimmerGridComponent()
-                    : Column(
-                        children: [
-                          Expanded(
-                            child: CategoryProductsGridComponent(
-                              id: id,
+              ],
+            ).symmetricPadding(horizontal: 16),
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: ProductCubit.get(context).getProductsByCategoryIdLoading
+                      ? const CategoryProductsShimmerGridComponent()
+                      : Column(
+                          children: [
+                            Expanded(
+                              child: CategoryProductsGridComponent(
+                                id: id,
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            visible: state is GetPaginatedProductLoading,
-                            child: Center(
-                                child: CircularProgressIndicator.adaptive()),
-                          )
-                        ],
-                      ),
-              );
-            },
-          ),
-        ],
+                            Visibility(
+                              visible: state is GetPaginatedProductLoading,
+                              child: const Center(
+                                  child: CircularProgressIndicator.adaptive()),
+                            )
+                          ],
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

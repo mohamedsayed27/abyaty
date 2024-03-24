@@ -17,9 +17,9 @@ class GetSubCategoriesModel extends GetSubCategoryEntity {
       success: json["success"],
       code: json["code"],
       message: json["message"],
-      subCategoryDetailsEntity: json["result"].map(
+      subCategoryDetailsEntity: json['result'] != null ? json["result"].map(
             (e) => SubCategoryDetailsModel.fromJson(e),
-      ).toList(),
+      ).toList() : null,
     );
   }
 }
