@@ -250,19 +250,22 @@ class ProductCubit extends Cubit<ProductState> {
     });
   }
 
+  bool getCategoriesLoading = false;
   List<CategoryDetailsEntity>? categories = [];
   void getCategories() async {
     categories = [];
+    getCategoriesLoading = true;
     emit(GetCategoriesLoading());
     final response = await _getCategoriesListUseCase(const NoParameters());
     response.fold((l) {
-      print(l);
+      print(l); getCategoriesLoading = false;
       emit(GetCategoriesError(
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       print(r.categoryDetailsEntity,);
         categories = r.categoryDetailsEntity;
+        getCategoriesLoading = false;
       emit(GetCategoriesSuccess());
     });
   }

@@ -10,6 +10,7 @@ import '../../../core/app_theme/app_colors.dart';
 import '../../buisness_logic/product_cubit/product_state.dart';
 import '../../screens/shop_screen/category_details_screen.dart';
 import '../shared_widgets/category_item_widget.dart';
+import '../shared_widgets/category_shimmer_widget.dart';
 
 class CategoriesGridViewComponent extends StatefulWidget {
   final bool shrinkWrap;
@@ -36,11 +37,10 @@ class _CategoriesGridViewComponentState
   ];
 
   List<Color> chosenColorLIST = [];
-  late ProductCubit cubit;
 
   @override
   void initState() {
-    cubit = ProductCubit.get(context);
+    ProductCubit cubit = ProductCubit.get(context);
     if (cubit.categories!.isEmpty) {
       cubit.getCategories();
     }
@@ -54,7 +54,8 @@ class _CategoriesGridViewComponentState
         // TODO: implement listener
       },
       builder: (context, state) {
-        return GridView.builder(
+        ProductCubit cubit = ProductCubit.get(context);
+        return cubit.getCategoriesLoading?const CategoriesShimmerGridViewComponent():GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: widget.shrinkWrap,
           padding: EdgeInsets.symmetric(horizontal: 16.w),

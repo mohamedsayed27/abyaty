@@ -19,43 +19,41 @@ class OnboardingProgressButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 96.w,
-      height: 96.h,
-      child: CircularStepProgressIndicator(
-        totalSteps: 3,
-        circularDirection: CircularDirection.counterclockwise,
-        currentStep: currentStep,
-        selectedColor: AppColors.primaryColor,
-        stepSize: 2.w,
-        child: Padding(
-          padding: EdgeInsets.all(10.r),
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                shape: const CircleBorder(),
-                padding: EdgeInsets.zero,
-                shadowColor: Colors.transparent,
-                foregroundColor: Colors.white,
-                elevation: 1),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              child: currentStep != 3
-                  ? Icon(
-                      Icons.arrow_forward_outlined,
-                      size: 26.r,
-                    )
-                  : Text(
-                      LocaleKeys.ready.tr(),
-                      style: CustomThemes.whiteColoTextTheme(context)
-                          .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
-                    ),
-            ),
+    return CircularStepProgressIndicator(
+      totalSteps: 3,
+      circularDirection: CircularDirection.counterclockwise,
+      currentStep: currentStep,
+      height: 96,
+      width: 96,
+      selectedColor: AppColors.primaryColor,
+      stepSize: 2.w,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              shape: const CircleBorder(),
+              padding: EdgeInsets.zero,
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 1,),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: currentStep != 3
+                ? Icon(
+                    Icons.arrow_forward_outlined,
+                    size: 26.r,
+                  )
+                : Text(
+                    LocaleKeys.ready.tr(),
+                    style: CustomThemes.whiteColoTextTheme(context)
+                        .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                  ),
           ),
         ),
-        roundedCap: (_, isSelected) => isSelected,
       ),
+      roundedCap: (_, isSelected) => isSelected,
     );
   }
 }

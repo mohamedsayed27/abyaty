@@ -20,7 +20,7 @@ class CategoryProductsShimmerGridComponent extends StatelessWidget {
       },
       builder: (context, state) {
         return GridView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

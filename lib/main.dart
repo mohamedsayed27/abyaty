@@ -1,6 +1,7 @@
 import 'package:abyaty/core/cache_helper/shared_pref_methods.dart';
 import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
 import 'package:abyaty/try_screen.dart';
+import 'package:flutter/services.dart';
 
 import 'bloc_observer.dart';
 import 'core/app_router/app_router.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'presentation/buisness_logic/sliders_cubit/sliders_cubit.dart';
 import 'presentation/screens/address_location_screen/saved_address_screen.dart';
 import 'translations/codegen_loader.g.dart';
 
@@ -61,6 +63,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (_) => MainLayoutCubit()),
             BlocProvider(create: (_) => ProductCubit()),
             BlocProvider(create: (_) => AuthCubit()),
+            BlocProvider(create: (_) => SlidersCubit()),
             BlocProvider(create: (_) => AddressCubit()..getAddressList()),
           ],
           child: MaterialApp(

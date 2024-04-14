@@ -1,3 +1,5 @@
+import 'package:abyaty/data/repository/sliders_repository/sliders_repository.dart';
+import 'package:abyaty/domain/repositories/slider_base_repository/slider_base_repository.dart';
 import 'package:abyaty/domain/use_cases/categories_use_case/get_categories_list_use_case.dart';
 import 'package:get_it/get_it.dart';
 
@@ -6,6 +8,7 @@ import '../../data/datasource/remote_datasource/auth_datasource.dart';
 import '../../data/datasource/remote_datasource/categories_datasource.dart';
 import '../../data/datasource/remote_datasource/products_remote_data_source.dart';
 import '../../data/datasource/remote_datasource/profile_datasource.dart';
+import '../../data/datasource/remote_datasource/sliders_remote_data_source.dart';
 import '../../data/repository/address_repository/address_repository.dart';
 import '../../data/repository/auth_repository/auth_repository.dart';
 import '../../data/repository/categories_repository/categories_repository.dart';
@@ -36,6 +39,7 @@ import '../../domain/use_cases/products_use_case/get_top_selling_use_case.dart';
 import '../../domain/use_cases/products_use_case/remove_product_from_cart_use_case.dart';
 import '../../domain/use_cases/products_use_case/remove_product_from_favorite_use_case.dart';
 import '../../domain/use_cases/products_use_case/review_product_use_case.dart';
+import '../../domain/use_cases/sliders_use_cases/sliders_use_cases.dart';
 import '../network/dio_helper.dart';
 import 'maps_services.dart';
 
@@ -120,11 +124,18 @@ class ServicesLocator {
           productBaseRepository: sl(),
         ));
 
+    ///SlidersUseCase
+
+    sl.registerLazySingleton(() => GetSlidersDataUseCase(
+      sliderBaseRepository: sl(),
+    ));
     ///REPOSITORY
     sl.registerLazySingleton<AuthBaseRepository>(
         () => AuthRepository(authBaseRemoteDataSource: sl()));
     sl.registerLazySingleton<AddressBaseRepository>(
         () => AddressRepository(addressBaseRemoteDatasource: sl()));
+    sl.registerLazySingleton<SliderBaseRepository>(
+        () => SlidersRepository(sliderBaseRemoteDataSource: sl()));
     sl.registerLazySingleton<ProfileBaseRepository>(
         () => ProfileRepository(profileBaseRemoteDataSource: sl()));
     sl.registerLazySingleton<CategoriesBaseRepository>(
@@ -143,6 +154,8 @@ class ServicesLocator {
         () => CategoriesRemoteDatasource(dioHelper: sl()));
     sl.registerLazySingleton<ProductBaseRemoteDataSource>(
         () => ProductRemoteDataSource(dioHelper: sl()));
+    sl.registerLazySingleton<SliderBaseRemoteDataSource>(
+        () => SliderRemoteDataSource(dioHelper: sl()));
 
     /// API Methods Class (DIO)
     sl.registerLazySingleton(() => DioHelper());
