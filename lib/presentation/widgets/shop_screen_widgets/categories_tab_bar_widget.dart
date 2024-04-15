@@ -1,4 +1,3 @@
-import 'package:abyaty/core/assets_path/images_path.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:abyaty/presentation/widgets/shop_screen_widgets/sub_categories_tab_bar_button.dart';
 import 'package:flutter/material.dart';

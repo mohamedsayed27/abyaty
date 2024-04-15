@@ -58,10 +58,11 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
             pagination: SwiperPagination(
               alignment: Alignment.bottomCenter,
               builder: DotSwiperPaginationBuilder(
-                  color: Colors.white,
-                  activeColor: AppColors.secondaryColor,
-                  activeSize: 12.w,
-                  size: 8.w),
+                color: Colors.white,
+                activeColor: AppColors.secondaryColor,
+                activeSize: 12.w,
+                size: 8.w,
+              ),
             ),
           );
         },
