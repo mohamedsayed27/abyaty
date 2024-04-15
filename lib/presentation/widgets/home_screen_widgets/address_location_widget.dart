@@ -11,23 +11,9 @@ import '../../buisness_logic/address_cubit/address_cubit.dart';
 import '../../buisness_logic/address_cubit/address_state.dart';
 import '../bottom_sheets/home_location_bottom_sheet/home_location_bottom_sheet_widget.dart';
 
-class AddressLocationWidget extends StatefulWidget {
+class AddressLocationWidget extends StatelessWidget {
   const AddressLocationWidget({super.key});
 
-  @override
-  State<AddressLocationWidget> createState() => _AddressLocationWidgetState();
-}
-
-class _AddressLocationWidgetState extends State<AddressLocationWidget> {
-  late AddressCubit cubit;
-  @override
-  void initState() {
-    cubit =AddressCubit.get(context);
-    if(cubit.addressList.isEmpty){
-      AddressCubit.get(context).getAddressList();
-    }
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddressCubit, AddressState>(
@@ -35,6 +21,7 @@ class _AddressLocationWidgetState extends State<AddressLocationWidget> {
         // TODO: implement listener
       },
       builder: (context, state) {
+        AddressCubit cubit =AddressCubit.get(context);
         return ListTile(
           onTap: () {
             showModalBottomSheet(

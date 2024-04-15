@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/route_exports.dart';
 import '../../../translations/locale_keys.g.dart';
+import '../../buisness_logic/address_cubit/address_cubit.dart';
 import '../../buisness_logic/main_layout_cubit/main_layout_cubit.dart';
 import '../../buisness_logic/main_layout_cubit/main_layout_state.dart';
+import '../../buisness_logic/product_cubit/product_cubit.dart';
+import '../../buisness_logic/sliders_cubit/sliders_cubit.dart';
 import '../../widgets/home_screen_widgets/address_location_widget.dart';
 import '../../widgets/home_screen_widgets/bank_wallet_list_view_component.dart';
 import '../../widgets/home_screen_widgets/blogs_list_view_component.dart';
@@ -17,9 +20,30 @@ import '../../widgets/shared_widgets/home_divider_widget.dart';
 import '../../widgets/home_screen_widgets/top_selling_products_grid_components.dart';
 import '../../widgets/shared_widgets/component_title_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key,});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    if (SlidersCubit.get(context).slidersList.isEmpty) {
+      SlidersCubit.get(context).getSliders();
+    }
+    if(AddressCubit.get(context).addressList.isEmpty){
+      AddressCubit.get(context).getAddressList();
+    }
+    if (ProductCubit.get(context).categories!.isEmpty) {
+      ProductCubit.get(context).getCategories();
+    }
+    if (ProductCubit.get(context).topSellingProducts!.isEmpty) {
+      ProductCubit.get(context).getTopSelling();
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -244,7 +244,7 @@ class ProductCubit extends Cubit<ProductState> {
       ));
     }, (r) {
       if (r.productsList != null && r.productsList!.isNotEmpty) {
-        topSellingProducts = r.productsList;
+        topSellingProducts = r.productsList??[];
       }
       emit(GetTopSellingProductsSuccess());
     });

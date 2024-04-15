@@ -78,5 +78,6 @@ class SvgPath{
   static const highQuality = "assets/svg/highQuality.svg";
   static const be1 = "assets/svg/be1.svg";
   static const be2 = "assets/svg/be2.svg";
+  static const emptyState = "assets/svg/emptyState.svg";
   SvgPath._();
 }
