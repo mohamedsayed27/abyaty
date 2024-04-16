@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
 import '../shared_widgets/product_widget.dart';
 
@@ -47,6 +48,10 @@ class _CategoryProductsGridComponentState extends State<CategoryProductsGridComp
           itemCount: cubit.productsByCategory.length,
           itemBuilder: (context, index) {
             return ProductWidget(
+              onTap: (){
+                cubit.getProductDetails(productId: cubit.productsByCategory[index].id!);
+                Navigator.pushNamed(context, ScreenName.productDetailsScreen);
+              },
               productEntity: cubit.productsByCategory[index],
             );
           },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
 
 class FavoritesProductsGridComponent extends StatefulWidget {
@@ -30,6 +31,7 @@ class _FavoritesProductsGridComponentState extends State<FavoritesProductsGridCo
         // TODO: implement listener
       },
       builder: (context, state) {
+        ProductCubit cubit = ProductCubit.get(context);
         return GridView.builder(
           physics: const BouncingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
@@ -42,6 +44,10 @@ class _FavoritesProductsGridComponentState extends State<FavoritesProductsGridCo
           itemCount: cubit.favoritesProducts!.length,
           itemBuilder: (context, index) {
             return ProductWidget(
+              onTap: (){
+                cubit.getProductDetails(productId: cubit.favoritesProducts![index].id!);
+                Navigator.pushNamed(context, ScreenName.productDetailsScreen);
+              },
               productEntity: cubit.favoritesProducts![index],
             );
           },

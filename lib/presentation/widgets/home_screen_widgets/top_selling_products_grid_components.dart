@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
 
 class TopSellingProductsGridComponent extends StatefulWidget {
@@ -48,6 +49,11 @@ class _TopSellingProductsGridComponentState
                 itemCount: cubit.topSellingProducts!.length,
                 itemBuilder: (context, index) {
                   return ProductWidget(
+
+                    onTap: (){
+                      cubit.getProductDetails(productId: cubit.topSellingProducts![index].id!);
+                      Navigator.pushNamed(context, ScreenName.productDetailsScreen);
+                    },
                     productEntity: cubit.topSellingProducts![index],
                   );
                 },

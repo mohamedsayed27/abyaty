@@ -19,19 +19,17 @@ import 'add_to_cart_elevated_button.dart';
 class ProductWidget extends StatelessWidget {
   final ProductEntity productEntity;
   final double? width;
+  final void Function()? onTap;
   const ProductWidget({
     super.key,
-    required this.productEntity, this.width,
+    required this.productEntity, this.width, this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return InkWell(
-      onTap: () {
-        ProductCubit.get(context).getProductDetails(productId: productEntity.id!);
-        Navigator.pushNamed(context, ScreenName.productDetailsScreen);
-      },
+      onTap: onTap,
       splashColor: Colors.transparent,
       overlayColor: MaterialStateProperty.all(Colors.transparent),
       borderRadius: BorderRadius.circular(12.r),

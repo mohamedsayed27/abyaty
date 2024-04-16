@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/app_router/screens_name.dart';
 import '../../../core/app_theme/custom_themes.dart';
 import '../../../core/constants/dummy_data.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
@@ -38,6 +39,14 @@ class RelatedProductWidget extends StatelessWidget {
                     right: 16.w, left: 16.w, top: 16.h, bottom: 36.h),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (_, index) => ProductWidget(
+                  onTap: () {
+                    cubit.getProductDetails(
+                      productId: cubit
+                          .productDetailsEntity!.relatedProducts![index].id!,
+                    );
+                    Navigator.pushReplacementNamed(
+                        context, ScreenName.productDetailsScreen);
+                  },
                   productEntity:
                       cubit.productDetailsEntity!.relatedProducts![index],
                   width: 164.w,

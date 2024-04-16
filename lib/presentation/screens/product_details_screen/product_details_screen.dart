@@ -11,6 +11,7 @@ import '../../widgets/product_details_widgets/description_widget.dart';
 import '../../widgets/product_details_widgets/info_widgets.dart';
 import '../../widgets/product_details_widgets/product_details_cart_button.dart';
 import '../../widgets/product_details_widgets/product_details_image_component.dart';
+import '../../widgets/product_details_widgets/product_details_shimmer.dart';
 import '../../widgets/product_details_widgets/reviews_component.dart';
 import '../../widgets/product_details_widgets/tab_bar_widget.dart';
 
@@ -30,7 +31,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     _tabController = TabController(
       length: 4,
       vsync: this,
-
     );
     super.initState();
   }
@@ -44,66 +44,65 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return BlocConsumer<ProductCubit, ProductState>(
-  listener: (context, state) {
-    // TODO: implement listener
-  },
-  builder: (context, state) {
-    return Scaffold(
-      body: DefaultTabController(
-        length: 4,
-        child: Stack(
-          children: [
-            NestedScrollView(
-              headerSliverBuilder: (_, innerBoxIsScrolled) => [
-                SliverAppBar(
-                  expandedHeight: width > 380 ? 400.h : 450.h,
-                  // Set your desired height
-                  pinned: true,
-                  surfaceTintColor: AppColors.whiteColor,
-                  leading: BackButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: AppColors.grey4D,
+    return BlocBuilder<ProductCubit, ProductState>(
+      builder: (context, state) {
+        ProductCubit cubit = ProductCubit.get(context);
+        return Scaffold(
+          body: DefaultTabController(
+            length: 4,
+            child: cubit.getProductDetailsLoading
+                ? const ProductDetailsShimmer()
+                : Stack(
+                    children: [
+                      NestedScrollView(
+                        headerSliverBuilder: (_, innerBoxIsScrolled) => [
+                          SliverAppBar(
+                            expandedHeight: width > 380 ? 400.h : 450.h,
+                            // Set your desired height
+                            pinned: true,
+                            surfaceTintColor: AppColors.whiteColor,
+                            leading: BackButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              color: AppColors.grey4D,
+                            ),
+                            actions: const [CartButton()],
+                            bottom: PreferredSize(
+                              preferredSize: Size(double.infinity,
+                                  AppBar().preferredSize.height),
+                              child: ProductDetailsTabBarWidget(
+                                tabController: _tabController,
+                              ),
+                            ),
+                            flexibleSpace:  FlexibleSpaceBar(
+                              collapseMode: CollapseMode.parallax,
+                              background: ProductDetailsImagesList(image: "",),
+                            ),
+                          ),
+                        ],
+                        body: Column(
+                          children: [
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
+                                children:  [
+                                  DescriptionComponent(productDetailsEntity: cubit.productDetailsEntity!,),
+                                  InfoComponent(),
+                                  CareInstructionComponent(),
+                                  const ReviewsComponent(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const ProductDetailsCartButton(),
+                    ],
                   ),
-                  actions: const [
-                    CartButton()
-                  ],
-                  bottom: PreferredSize(
-                    preferredSize: Size(double.infinity, AppBar().preferredSize.height),
-                    child: ProductDetailsTabBarWidget(
-                      tabController: _tabController,
-                    ),
-                  ),
-                  flexibleSpace: const FlexibleSpaceBar(
-                    collapseMode: CollapseMode.parallax,
-                    background: ProductDetailsImagesList(),
-                  ),
-                ),
-              ],
-              body: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: const [
-                        DescriptionComponent(),
-                        InfoComponent(),
-                        CareInstructionComponent(),
-                        ReviewsComponent(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const ProductDetailsCartButton(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
-  },
-);
   }
 }

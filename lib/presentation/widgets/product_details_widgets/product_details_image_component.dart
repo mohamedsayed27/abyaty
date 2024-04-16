@@ -2,6 +2,7 @@ import 'package:abyaty/core/app_theme/app_colors.dart';
 import 'package:abyaty/core/constants/dummy_data.dart';
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:abyaty/presentation/widgets/product_details_widgets/product_name_price_favorite_widget.dart';
+import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_widget.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,14 +12,18 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/assets_path/svg_path.dart';
 
 class ProductDetailsImagesList extends StatefulWidget {
-  const ProductDetailsImagesList({super.key});
+  final String image;
+
+  const ProductDetailsImagesList({super.key, required this.image});
 
   @override
-  State<ProductDetailsImagesList> createState() => _ProductDetailsImagesListState();
+  State<ProductDetailsImagesList> createState() =>
+      _ProductDetailsImagesListState();
 }
 
 class _ProductDetailsImagesListState extends State<ProductDetailsImagesList> {
   final controller = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,12 +48,12 @@ class _ProductDetailsImagesListState extends State<ProductDetailsImagesList> {
                           BoxShadow(
                             offset: Offset(0, 8.h),
                             color: AppColors.shadowColor(opacity: 0.1),
-                            blurRadius: 32.r
+                            blurRadius: 32.r,
                           )
-                        ]
+                        ],
                       ),
-                      child: Image.asset(
-                        DummyData.topSellingProductsDummyList[index],
+                      child: CachedNetworkImageWidget(
+                        imageUrl: widget.image,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -74,7 +79,8 @@ class _ProductDetailsImagesListState extends State<ProductDetailsImagesList> {
                     activeDotColor: AppColors.secondaryColor,
                   ),
                 ),
-              ),),
+              ),
+            ),
           ],
         ),
         const ProductNameAndPriceAndFavoriteWidget(),

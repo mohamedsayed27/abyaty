@@ -1,4 +1,5 @@
 import 'package:abyaty/core/constants/extensions.dart';
+import 'package:abyaty/domain/entities/product_entity/product_details_details_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,7 +11,8 @@ import '../shared_widgets/product_widget.dart';
 import 'related_product_widget.dart';
 
 class DescriptionComponent extends StatelessWidget {
-  const DescriptionComponent({super.key});
+  final ProductDetailsEntity productDetailsEntity;
+  const DescriptionComponent({super.key, required this.productDetailsEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +34,7 @@ class DescriptionComponent extends StatelessWidget {
           height: 8,
         ),
         Text(
-          "Jelly beans carrot cake icing biscuit oat cake gummi bears tart. Lemon gummi bears. " *
-              4,
+          productDetailsEntity.details??"",
           style: CustomThemes.greyColor80TextTheme(
               context)
               .copyWith(

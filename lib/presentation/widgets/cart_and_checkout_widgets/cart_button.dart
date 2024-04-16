@@ -7,12 +7,13 @@ import '../../../core/app_theme/app_colors.dart';
 import '../../../core/assets_path/svg_path.dart';
 
 class CartButton extends StatelessWidget {
-  const CartButton({super.key});
+  final void Function()? onPressed;
+  const CartButton({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
+      onPressed: onPressed??() {
         Navigator.pushNamed(context, ScreenName.cartScreen);
       },
       icon: SvgPicture.asset(

@@ -222,17 +222,17 @@ class ProductCubit extends Cubit<ProductState> {
   ProductDetailsEntity? productDetailsEntity;
   void getProductDetails({required int productId}) async {
     productDetailsEntity = null;
-    getProductDetailsLoading = false;
+    getProductDetailsLoading = true;
     emit(GetProductDetailsLoading());
     final response = await _getProductDetailsUseCase(productId);
     response.fold((l) {
-      getProductDetailsLoading = true;
+      getProductDetailsLoading = false;
       emit(GetProductDetailsError(
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       productDetailsEntity = r.productDetailsEntity;
-      getProductDetailsLoading = true;
+      getProductDetailsLoading = false;
       emit(GetProductDetailsSuccess());
     });
   }
@@ -283,7 +283,7 @@ class ProductCubit extends Cubit<ProductState> {
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
-        subCategories = r.subCategoryDetailsEntity;
+        subCategories = r.subCategoryDetailsEntity??[];
         subCategories?.insert(0, const SubCategoryDetailsEntity(name: "All" ));
       emit(GetSubCategoriesSuccess());
     });
