@@ -8,6 +8,7 @@ import '../../buisness_logic/product_cubit/product_cubit.dart';
 
 class CategoriesTabBarWidget extends StatefulWidget {
   final int categoryId;
+
   const CategoriesTabBarWidget({super.key, required this.categoryId});
 
   @override
@@ -15,47 +16,41 @@ class CategoriesTabBarWidget extends StatefulWidget {
 }
 
 class _CategoriesTabBarWidgetState extends State<CategoriesTabBarWidget> {
-  late ProductCubit cubit;
-
   @override
   void initState() {
-    cubit = ProductCubit.get(context);
-    cubit.getSubCategories(categoryId: widget.categoryId);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 34.h,
-      child: ListView.separated(
-        itemBuilder: (_, index) =>
-            BlocConsumer<ProductCubit, ProductState>(
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              builder: (context, state) {
-                return SubCategoriesTabBarButton(
-                  isSelected: cubit.selectedIndex == index,
-                  subCategoryDetailsEntity: cubit.subCategories![index],
-                  onPressed: () {
-                    if (index != cubit.selectedIndex) {
-                      setState(() {
-                        cubit.selectedIndex = index;
-                      });
-                    }
-                  },
-                );
+      child: BlocConsumer<ProductCubit, ProductState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          ProductCubit cubit = ProductCubit.get(context);
+          return ListView.separated(
+            itemBuilder: (_, index) => SubCategoriesTabBarButton(
+              isSelected: cubit.selectedIndex == index,
+              subCategoryDetailsEntity: cubit.subCategories![index],
+              onPressed: () {
+                if (index != cubit.selectedIndex) {
+                  setState(() {
+                    cubit.selectedIndex = index;
+                  });
+                }
               },
             ),
-        separatorBuilder: (_, index) =>
-        const CustomSizedBox(
-          width: 8,
-        ),
-        itemCount: cubit.subCategories!.length,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-        ),
+            separatorBuilder: (_, index) => const CustomSizedBox(
+              width: 8,
+            ),
+            itemCount: cubit.subCategories!.length,
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+            ),
+          );
+        },
       ),
     );
   }

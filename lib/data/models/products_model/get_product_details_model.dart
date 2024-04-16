@@ -80,7 +80,13 @@ class ProductInfoModel extends ProductInfoEntity {
       type: json['type'],
       sku: json['sku'],
       createdAt: json['created_at'],
-      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
+      tags: json['tags'] != null && json['tags'].isNotEmpty
+          ? List<TagInfoValueModel>.from(
+              json['tags'].map(
+                (e) => TagInfoValueModel.fromJson(e),
+              ),
+            )
+          : null,
     );
   }
 
@@ -88,6 +94,18 @@ class ProductInfoModel extends ProductInfoEntity {
   List<Object?> get props => [
         super.props,
       ];
+}
+
+class TagInfoValueModel extends TagInfoValueEntity {
+  const TagInfoValueModel({required super.value});
+
+  factory TagInfoValueModel.fromJson(Map<String, dynamic> json) {
+    return TagInfoValueModel(value: json["value"]);
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [value];
 }
 
 class ProductReviewsModel extends ProductReviewsEntity {

@@ -40,7 +40,6 @@ class _CategoriesGridViewComponentState
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -54,38 +53,42 @@ class _CategoriesGridViewComponentState
         ProductCubit cubit = ProductCubit.get(context);
         return cubit.getCategoriesLoading
             ? const CategoriesShimmerGridViewComponent()
-            : cubit.categories!.isNotEmpty?GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: widget.shrinkWrap,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 0.87,
-                  crossAxisSpacing: 15.5.w,
-                  mainAxisSpacing: 16.h,
-                ),
-                itemCount:
-                    cubit.categories!.length > 9 ? 9 : cubit.categories!.length,
-                itemBuilder: (context, index) {
-                  return CategoryItemWidget(
-                    onTap: () {
-                      cubit.productByCategoryPageNumber = 1;
-                      cubit.productsByCategory = [];
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CategoryDetailsScreen(
-                            title: cubit.categories![index].name ?? "",
-                            id: cubit.categories![index].id!,
-                          ),
-                        ),
+            : cubit.categories!.isNotEmpty
+                ? GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: widget.shrinkWrap,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 0.87,
+                      crossAxisSpacing: 15.5.w,
+                      mainAxisSpacing: 16.h,
+                    ),
+                    itemCount: cubit.categories!.length > 9
+                        ? 9
+                        : cubit.categories!.length,
+                    itemBuilder: (context, index) {
+                      return CategoryItemWidget(
+                        onTap: () {
+                          cubit.productByCategoryPageNumber = 1;
+                          cubit.productsByCategory = [];
+                          ProductCubit.get(context).getSubCategories(categoryId: cubit.categories![index].id!);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryDetailsScreen(
+                                title: cubit.categories![index].name ?? "",
+                                id: cubit.categories![index].id!,
+                              ),
+                            ),
+                          );
+                        },
+                        categoryDetailsEntity: cubit.categories![index],
+                        color: (itemsColor..shuffle()).first,
                       );
                     },
-                    categoryDetailsEntity: cubit.categories![index],
-                    color: (itemsColor..shuffle()).first,
-                  );
-                },
-              ):EmptyStateWidget();
+                  )
+                : EmptyStateWidget();
       },
     );
   }

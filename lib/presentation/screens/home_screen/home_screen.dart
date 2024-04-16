@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (ProductCubit.get(context).topSellingProducts!.isEmpty) {
       ProductCubit.get(context).getTopSelling();
     }
+
     super.initState();
   }
   @override

@@ -76,7 +76,7 @@ class ProductInfoEntity extends Equatable {
   final String? type;
   final String? sku;
   final String? createdAt;
-  final List<String>? tags;
+  final List<TagInfoValueEntity>? tags;
 
   const ProductInfoEntity({
     this.type,
@@ -102,7 +102,18 @@ class ProductInfoEntity extends Equatable {
 //   );
 // }
 }
+class TagInfoValueEntity extends Equatable{
+  final String value;
 
+  const TagInfoValueEntity({required this.value});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+    value
+  ];
+
+}
 class ProductReviewsEntity extends Equatable {
   final double? avg;
   final Map<String, int>? ratings;

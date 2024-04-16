@@ -10,11 +10,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/assets_path/svg_path.dart';
+import '../../../domain/entities/product_entity/product_details_details_entity.dart';
 
 class ProductDetailsImagesList extends StatefulWidget {
   final String image;
-
-  const ProductDetailsImagesList({super.key, required this.image});
+  final ProductDetailsEntity productDetailsEntity;
+  const ProductDetailsImagesList({super.key, required this.image, required this.productDetailsEntity});
 
   @override
   State<ProductDetailsImagesList> createState() =>
@@ -83,7 +84,7 @@ class _ProductDetailsImagesListState extends State<ProductDetailsImagesList> {
             ),
           ],
         ),
-        const ProductNameAndPriceAndFavoriteWidget(),
+         ProductNameAndPriceAndFavoriteWidget(productDetailsEntity: widget.productDetailsEntity,),
       ],
     );
   }

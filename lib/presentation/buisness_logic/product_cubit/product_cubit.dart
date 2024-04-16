@@ -214,6 +214,7 @@ class ProductCubit extends Cubit<ProductState> {
       if (r.attributes != null && r.attributes!.isNotEmpty) {
         productAttributesList = r.attributes;
       }
+      print(r);
       emit(GetProductsAttributeSuccess());
     });
   }
@@ -284,7 +285,8 @@ class ProductCubit extends Cubit<ProductState> {
       ));
     }, (r) {
         subCategories = r.subCategoryDetailsEntity??[];
-        subCategories?.insert(0, const SubCategoryDetailsEntity(name: "All" ));
+        subCategories!.insert(0, const SubCategoryDetailsEntity(name: "All" ));
+        print(subCategories);
       emit(GetSubCategoriesSuccess());
     });
   }

@@ -77,7 +77,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                             ),
                             flexibleSpace:  FlexibleSpaceBar(
                               collapseMode: CollapseMode.parallax,
-                              background: ProductDetailsImagesList(image: "",),
+                              background: ProductDetailsImagesList(image: "", productDetailsEntity: cubit.productDetailsEntity!,),
                             ),
                           ),
                         ],
@@ -88,7 +88,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                                 controller: _tabController,
                                 children:  [
                                   DescriptionComponent(productDetailsEntity: cubit.productDetailsEntity!,),
-                                  InfoComponent(),
+                                  InfoComponent(productDetailsEntity: cubit.productDetailsEntity!,),
                                   CareInstructionComponent(),
                                   const ReviewsComponent(),
                                 ],

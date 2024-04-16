@@ -2,6 +2,7 @@ import 'package:abyaty/core/app_router/screens_name.dart';
 import 'package:abyaty/core/app_theme/app_colors.dart';
 import 'package:abyaty/core/app_theme/custom_themes.dart';
 import 'package:abyaty/core/assets_path/svg_path.dart';
+import 'package:abyaty/core/constants/constants.dart';
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:abyaty/domain/entities/product_entity/product_details_details_entity.dart';
 import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_elevated_button.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,9 +22,12 @@ class ProductWidget extends StatelessWidget {
   final ProductEntity productEntity;
   final double? width;
   final void Function()? onTap;
+
   const ProductWidget({
     super.key,
-    required this.productEntity, this.width, this.onTap,
+    required this.productEntity,
+    this.width,
+    this.onTap,
   });
 
   @override
@@ -62,7 +67,8 @@ class ProductWidget extends StatelessWidget {
                     child: CustomSizedBox(
                       height: 80,
                       width: 96,
-                      child: CachedNetworkImageWidget(imageUrl: productEntity.photo!),
+                      child: CachedNetworkImageWidget(
+                          imageUrl: productEntity.photo!),
                     ),
                   ),
                   PositionedDirectional(
@@ -128,7 +134,7 @@ class ProductWidget extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                productEntity.name??"",
+                productEntity.name ?? "",
                 textAlign: TextAlign.start,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -152,16 +158,18 @@ class ProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                   children: [
-                    if(productEntity.discountPrice!=productEntity.beforeDiscountPrice)TextSpan(
-                      text: "${productEntity.beforeDiscountPrice}",
-                      style: CustomThemes.greyColor80TextTheme(context)
-                          .copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        decorationColor: AppColors.regularGreyTextColor,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    )
+                    if (productEntity.discountPrice !=
+                        productEntity.beforeDiscountPrice)
+                      TextSpan(
+                        text: "${productEntity.beforeDiscountPrice}",
+                        style:
+                            CustomThemes.greyColor80TextTheme(context).copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: AppColors.regularGreyTextColor,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
                   ]),
             ),
             const CustomSizedBox(
@@ -169,12 +177,10 @@ class ProductWidget extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.center,
-              child: AddToCartElevatedButton(
-                cartIconWidth: 14,
-                cartIconHeight: 14,
-                cartIconColor: AppColors.primaryColor,
-                  onPressed: () {
-                    showModalBottomSheet(
+              child: BlocConsumer<ProductCubit, ProductState>(
+                listener: (context, state) {
+                  if (state is GetProductsAttributeSuccess) {
+                    Navigator.pop(context);showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
                       useSafeArea: true,
@@ -190,16 +196,32 @@ class ProductWidget extends StatelessWidget {
                         return const AddToCartBottomSheet();
                       },
                     );
+                  }
+                  if (state is GetProductsAttributeError) {
+                    Navigator.pop(context);
+                  }
+                },
+                builder: (context, state) {
+                  ProductCubit cubit = ProductCubit.get(context);
+                  return AddToCartElevatedButton(
+                    cartIconWidth: 14,
+                    cartIconHeight: 14,
+                    cartIconColor: AppColors.primaryColor,
+                    onPressed: () {
+                      showProgressIndicator(context);
+                      cubit.getProductAttributes(productId: productEntity.id!);
 
-                  },
-                titleTheme:
-                    CustomThemes.primaryColorTextTheme(context).copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-                height: 32,
-                backgroundColor: AppColors.lightBlueBackgroundColor,
-                foregroundColor: AppColors.primaryColor,
+                    },
+                    titleTheme:
+                        CustomThemes.primaryColorTextTheme(context).copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    height: 32,
+                    backgroundColor: AppColors.lightBlueBackgroundColor,
+                    foregroundColor: AppColors.primaryColor,
+                  );
+                },
               ),
             )
           ],
