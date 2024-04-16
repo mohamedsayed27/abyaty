@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_theme/app_colors.dart';
-import '../../buisness_logic/product_cubit/product_state.dart';
 import '../../screens/shop_screen/category_details_screen.dart';
 import '../shared_widgets/category_item_widget.dart';
 import '../shared_widgets/category_shimmer_widget.dart';

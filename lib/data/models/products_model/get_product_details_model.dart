@@ -15,7 +15,7 @@ class GetProductDetailsModel extends GetProductDetailsEntity {
       success: json['success'],
       code: json['code'],
       message: json['message'],
-      productDetailsEntity: json['result'],
+      productDetailsEntity: ProductDetailsModel.fromJson(json['result']),
     );
   }
 

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../buisness_logic/product_cubit/product_cubit.dart';
-import '../../buisness_logic/product_cubit/product_state.dart';
 
 class CategoriesTabBarWidget extends StatefulWidget {
   final int categoryId;

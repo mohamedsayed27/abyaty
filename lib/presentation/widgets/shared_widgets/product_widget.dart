@@ -4,6 +4,7 @@ import 'package:abyaty/core/app_theme/custom_themes.dart';
 import 'package:abyaty/core/assets_path/svg_path.dart';
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:abyaty/domain/entities/product_entity/product_details_details_entity.dart';
+import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
 import 'package:abyaty/presentation/widgets/bottom_sheets/cart_bottom_sheet/add_to_cart_bottom_sheet.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_widget.dart';
 import 'package:abyaty/presentation/widgets/shared_widgets/custom_elevated_button.dart';
@@ -28,6 +29,7 @@ class ProductWidget extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
+        ProductCubit.get(context).getProductDetails(productId: productEntity.id!);
         Navigator.pushNamed(context, ScreenName.productDetailsScreen);
       },
       splashColor: Colors.transparent,

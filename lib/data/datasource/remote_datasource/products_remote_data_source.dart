@@ -129,6 +129,7 @@ class ProductRemoteDataSource extends ProductBaseRemoteDataSource {
       final response = await dioHelper.getData(
         url: "${EndPoints.productDetails}/$parameters",
       );
+      print(response);
       return GetProductDetailsModel.fromJson(response.data);
     } catch (e) {
       if (e is DioException) {

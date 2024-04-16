@@ -23,8 +23,7 @@ import '../../../domain/use_cases/products_use_case/get_top_selling_use_case.dar
 import '../../../domain/use_cases/products_use_case/remove_product_from_cart_use_case.dart';
 import '../../../domain/use_cases/products_use_case/remove_product_from_favorite_use_case.dart';
 import '../../../domain/use_cases/products_use_case/review_product_use_case.dart';
-import 'product_state.dart';
-
+part 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
 
@@ -219,16 +218,21 @@ class ProductCubit extends Cubit<ProductState> {
     });
   }
 
+  bool getProductDetailsLoading = false;
   ProductDetailsEntity? productDetailsEntity;
   void getProductDetails({required int productId}) async {
+    productDetailsEntity = null;
+    getProductDetailsLoading = false;
     emit(GetProductDetailsLoading());
     final response = await _getProductDetailsUseCase(productId);
     response.fold((l) {
+      getProductDetailsLoading = true;
       emit(GetProductDetailsError(
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
       productDetailsEntity = r.productDetailsEntity;
+      getProductDetailsLoading = true;
       emit(GetProductDetailsSuccess());
     });
   }
@@ -258,12 +262,11 @@ class ProductCubit extends Cubit<ProductState> {
     emit(GetCategoriesLoading());
     final response = await _getCategoriesListUseCase(const NoParameters());
     response.fold((l) {
-      print(l); getCategoriesLoading = false;
+      getCategoriesLoading = false;
       emit(GetCategoriesError(
         error: l.baseErrorModel.message??"",
       ));
     }, (r) {
-      print(r.categoryDetailsEntity,);
         categories = r.categoryDetailsEntity;
         getCategoriesLoading = false;
       emit(GetCategoriesSuccess());

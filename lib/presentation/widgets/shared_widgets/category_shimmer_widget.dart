@@ -1,34 +1,13 @@
-import 'package:abyaty/core/app_router/screens_name.dart';
-import 'package:abyaty/core/app_theme/app_colors.dart';
-import 'package:abyaty/core/app_theme/custom_themes.dart';
-import 'package:abyaty/core/assets_path/svg_path.dart';
-import 'package:abyaty/core/constants/extensions.dart';
-import 'package:abyaty/core/constants/route_exports.dart';
-import 'package:abyaty/domain/entities/product_entity/product_details_details_entity.dart';
-import 'package:abyaty/presentation/widgets/bottom_sheets/cart_bottom_sheet/add_to_cart_bottom_sheet.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/cached_network_image_widget.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/custom_elevated_button.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/custom_shimmer.dart';
-import 'package:abyaty/presentation/widgets/shared_widgets/custom_sized_box.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../domain/entities/product_entity/product_entity.dart';
-import 'add_to_cart_elevated_button.dart';
-import 'dart:math';
-
-import 'package:abyaty/core/constants/dummy_data.dart';
-import 'package:abyaty/core/constants/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_theme/app_colors.dart';
-import '../../buisness_logic/product_cubit/product_cubit.dart';
-import '../../buisness_logic/product_cubit/product_state.dart';
-import '../../screens/shop_screen/category_details_screen.dart';
-import '../shared_widgets/category_item_widget.dart';
+import 'custom_shimmer.dart';
+import 'custom_sized_box.dart';
+
+
+
 
 class CategoriesShimmerGridViewComponent extends StatefulWidget {
 

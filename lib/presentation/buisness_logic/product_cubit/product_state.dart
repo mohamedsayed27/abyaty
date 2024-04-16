@@ -1,3 +1,5 @@
+part of 'product_cubit.dart';
+
 
 abstract class ProductState {}
 

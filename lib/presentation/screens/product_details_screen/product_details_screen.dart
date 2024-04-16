@@ -1,4 +1,6 @@
+import 'package:abyaty/presentation/buisness_logic/product_cubit/product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/app_theme/app_colors.dart';
@@ -42,6 +44,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    return BlocConsumer<ProductCubit, ProductState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
     return Scaffold(
       body: DefaultTabController(
         length: 4,
@@ -96,5 +103,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
         ),
       ),
     );
+  },
+);
   }
 }

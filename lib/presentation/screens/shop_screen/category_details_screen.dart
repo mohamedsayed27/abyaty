@@ -10,7 +10,6 @@ import '../../../core/app_theme/app_colors.dart';
 import '../../../core/app_theme/custom_themes.dart';
 import '../../../translations/locale_keys.g.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
-import '../../buisness_logic/product_cubit/product_state.dart';
 import '../../widgets/bottom_sheets/filter_botttom_sheet/filter_bottom_sheet.dart';
 import '../../widgets/shared_widgets/custom_text_button.dart';
 import '../../widgets/shared_widgets/products_shimmer_grid.dart';

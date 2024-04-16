@@ -1,3 +1,4 @@
+import 'package:abyaty/core/constants/route_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,28 +59,41 @@ class CarouselSliderContainer extends StatelessWidget {
                   ],
                 ),
                 const CustomSizedBox(
-                  height: 12,
+                  height: 4,
                 ),
-                Text(
-                  sliderDetailsEntity.title ?? "",
-                  style: CustomThemes.whiteColoTextTheme(context).copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    sliderDetailsEntity.title ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: CustomThemes.whiteColoTextTheme(context).copyWith(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 const CustomSizedBox(
                   height: 4,
                 ),
-                Text(
-                  sliderDetailsEntity.details ?? "",
-                  style: CustomThemes.whiteColoTextTheme(context).copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    sliderDetailsEntity.details ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: CustomThemes.whiteColoTextTheme(context).copyWith(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
-                const CustomSizedBox(
-                  height: 12,
-                ),
+                // const CustomSizedBox(
+                //   height: 12,
+                // ),
+                // Spacer(),
                 CustomElevatedButton(
                   borderRadius: 8,
                   onPressed: () {},

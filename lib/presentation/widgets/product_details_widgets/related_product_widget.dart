@@ -1,4 +1,3 @@
-import 'package:abyaty/core/constants/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/app_theme/custom_themes.dart';
 import '../../../core/constants/dummy_data.dart';
 import '../../buisness_logic/product_cubit/product_cubit.dart';
-import '../../buisness_logic/product_cubit/product_state.dart';
 import '../shared_widgets/custom_sized_box.dart';
 import '../shared_widgets/product_widget.dart';
+import '../../../core/constants/extensions.dart';
 
 class RelatedProductWidget extends StatelessWidget {
   const RelatedProductWidget({super.key});
