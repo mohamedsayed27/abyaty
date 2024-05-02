@@ -28,7 +28,7 @@ class ProductNameAndPriceAndFavoriteWidget extends StatelessWidget {
                   style: CustomThemes.greyColor1ATextTheme(context)
                       .copyWith(
                       fontSize: 20.sp, fontWeight: FontWeight.w600),
-                  children: [
+                  children: const [
                     // TextSpan(
                     //   text: "(${productDetailsEntity.})",
                     //   style: CustomThemes.greyColor80TextTheme(context)
