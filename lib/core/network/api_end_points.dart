@@ -1,5 +1,5 @@
 class EndPoints{
-static const baseUrl ='https://abyat-test.ocodaserver.com/api/v1';
+static const baseUrl ='https://abyatii.com/api/v1';
 static const login ='/auth/login';
 static const items ='/items';
 static const wishlist ='/wishlist';

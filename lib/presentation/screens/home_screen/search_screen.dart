@@ -1,6 +1,5 @@
 import 'package:abyaty/core/constants/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../widgets/shared_widgets/search_filter_text_field.dart';
 
